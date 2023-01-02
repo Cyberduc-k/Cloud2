@@ -15,7 +15,7 @@ components:
       dockerfile:
         uri: docker/users
         buildContext: .
-        rootRequired: false
+        rootRequired: true
   - name: mongo-deploy
     kubernetes:
       uri: ./mongo.yaml
