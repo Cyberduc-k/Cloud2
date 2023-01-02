@@ -8,6 +8,9 @@ projects:
     git:
       remotes:
         origin: https://github.com/Cyberduc-k/Cloud2.git
+parent:
+  id: go
+  registryUrl: 'https://registry.devfile.io'
 components:
   - name: users-build
     image:
