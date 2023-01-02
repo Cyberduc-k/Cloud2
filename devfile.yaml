@@ -13,8 +13,8 @@ components:
     image:
       imageName: users-image:latest
       dockerfile:
-        uri: docker/Dockerfile
-        buildContext: ./API
+        uri: docker/users
+        buildContext: .
         rootRequired: false
   - name: mongo-deploy
     kubernetes:
