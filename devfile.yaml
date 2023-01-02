@@ -2,7 +2,7 @@ schemaVersion: 2.2.0
 metadata:
   name: sudokudevfile
   attributes:
-    alpha.dockerimage-port: 8080
+    alpha.dockerimage-port: 8081
 projects:
   - name: sudokus
     git:
@@ -26,7 +26,7 @@ components:
       deployment/cpuRequest: 10m
       deployment/memoryLimit: 100Mi
       deployment/memoryRequest: 10Mi
-      deployment/container-port: 8080
+      deployment/container-port: 8081
     kubernetes:
       uri: kubernetes/users.yaml
       endpoints:

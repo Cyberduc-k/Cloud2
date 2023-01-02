@@ -17,7 +17,7 @@ spec:
           image: users-image:latest
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 8081
               protocol: TCP
           resources:
             limits:
@@ -33,6 +33,6 @@ ports:
   - name: http-users
     port: 8081
     protocol: TCP
-    targetPort: 8080
+    targetPort: 8081
 selector:
   app: sudokus-users

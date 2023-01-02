@@ -8,6 +8,6 @@ RUN go mod download
 RUN mkdir bin
 RUN go build -o /app/bin/users ./users
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["/app/bin/users"]
