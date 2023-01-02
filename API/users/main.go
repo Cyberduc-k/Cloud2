@@ -5,8 +5,10 @@ import (
 	"api/repository"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -17,7 +19,8 @@ type Handler struct {
 
 func main() {
 	ctx := context.Background()
-	client, err := repository.NewClient(ctx, "mongodb://localhost:27017")
+	conn := os.Getenv("MONGODB_CONNECTION")
+	client, err := repository.NewClient(ctx, fmt.Sprintf("mongodb://%s:27017", conn))
 
 	if err != nil {
 		log.Fatal(err)
