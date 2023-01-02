@@ -1,6 +1,8 @@
 schemaVersion: 2.2.0
 metadata:
   name: sudokudevfile
+  attributes:
+    alpha.dockerimage-port: 8080
 projects:
   - name: sudokus
     git:
@@ -29,7 +31,7 @@ components:
       uri: kubernetes/users.yaml
       endpoints:
         - name: http-users
-          targetPort: 8080
+          targetPort: 8081
           path: /users
 commands:
   - id: build-users
