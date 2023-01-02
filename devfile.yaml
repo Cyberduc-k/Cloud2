@@ -11,7 +11,7 @@ components:
     image:
       imageName: users-image:latest
       dockerfile:
-        uri: ./docker/users
+        uri: docker/Dockerfile
         buildContext: ./API
         rootRequired: false
   - name: mongo-deploy
