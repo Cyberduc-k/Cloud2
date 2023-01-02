@@ -1,0 +1,12 @@
+schemaVersion: 2.2.0
+metadata:
+  name: sudokudevfile
+projects:
+  - name: sudokus
+    git:
+      remotes:
+        origin: https://github.com/Cyberduc-k/Cloud2.git
+components:
+  - name: mongo
+    kubernetes:
+      uri: ./mongo.yaml
