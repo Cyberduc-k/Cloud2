@@ -16,14 +16,32 @@ components:
         uri: docker/users
         buildContext: .
         rootRequired: true
+  - name: users-deploy
+    attributes:
+      deployment/replicas: 1
+      deployment/cpuLimit: 100m
+      deployment/cpuRequest: 10m
+      deployment/memoryLimit: 100Mi
+      deployment/memoryRequest: 10Mi
+      deployment/container-port: 8080
+    kubernetes:
+      uri: kubernetes/users.yaml
+      endpoints:
+        - name: http-users
+          targetPort: 8080
+          path: /users
 commands:
   - id: build-users
     apply:
       component: users-build
+  - id: deploy-users
+    apply:
+      component: users-deploy
   - id: deploy
     composite:
       commands:
         - build-users
+        - deploy-users
       group:
         kind: deploy
         isDefault: true
