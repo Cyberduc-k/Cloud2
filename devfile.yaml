@@ -28,7 +28,7 @@ commands:
     composite:
       commands:
         - build-users
-        - mongo-deploy
+        - deploy-mongo
       group:
         kind: deploy
         isDefault: true
