@@ -19,8 +19,10 @@ type Handler struct {
 
 func main() {
 	ctx := context.Background()
+	user := os.Getenv("MONGODB_USER")
+	pass := os.Getenv("MONGODB_PASSWORD")
 	conn := os.Getenv("MONGODB_CONNECTION")
-	client, err := repository.NewClient(ctx, fmt.Sprintf("mongodb://%s:27017", conn))
+	client, err := repository.NewClient(ctx, fmt.Sprintf("mongodb://%s:%s@%s:27017", user, pass, conn))
 
 	if err != nil {
 		log.Fatal(err)
