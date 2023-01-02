@@ -4,8 +4,8 @@ WORKDIR /app
 COPY ./API ./
 RUN go mod download
 
-RUN go build ./users -o ./users
+RUN go build -o ./bin/users ./users
 
 EXPOSE 8080
 
-CMD ["app/users"]
+CMD ["app/bin/users"]
