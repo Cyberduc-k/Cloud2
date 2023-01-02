@@ -7,6 +7,28 @@ projects:
       remotes:
         origin: https://github.com/Cyberduc-k/Cloud2.git
 components:
-  - name: mongo
+  - name: users-build
+    image:
+      imageName: users-image:latest
+      dockerfile:
+        uri: docker/users
+        buildContext: ./API
+        rootRequired: false
+  - name: mongo-deploy
     kubernetes:
       uri: ./mongo.yaml
+commands:
+  - id: build-users
+    apply:
+      component: users-build
+  - id: deploy-mongo
+    apply:
+      component: mongo-deploy
+  - id: deploy
+    composite:
+      commands:
+        - build-users
+        - mongo-deploy
+      group:
+        kind: deploy
+        isDefault: true
