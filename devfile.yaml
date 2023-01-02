@@ -16,21 +16,14 @@ components:
         uri: docker/users
         buildContext: .
         rootRequired: true
-  - name: mongo-deploy
-    kubernetes:
-      uri: ./mongo.yaml
 commands:
   - id: build-users
     apply:
       component: users-build
-  - id: deploy-mongo
-    apply:
-      component: mongo-deploy
   - id: deploy
     composite:
       commands:
         - build-users
-        - deploy-mongo
       group:
         kind: deploy
         isDefault: true
