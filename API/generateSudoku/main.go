@@ -74,7 +74,7 @@ func main() {
 	go func() {
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
-			fmt.Println(err)
+			/*fmt.Println(err)*/
 			generateSudoku(d.Body, handler)
 		}
 	}()
@@ -85,13 +85,14 @@ func main() {
 
 func generateSudoku(sudokuId []byte, handler Handler) {
 
-	/*newSudoku := model.Sudoku{
-		Id: MyObjectID(sudokuId),
-		StartState: "",
-		Solution:   "",
+	newSudoku := model.Sudoku{
+		Id:         MyObjectID(sudokuId),
+		StartState: model.Sudoku.Generate(model.Sudoku{}).StartState,
+		Solution:   model.Sudoku.Generate(model.Sudoku{}).StartState,
 	}
-
-	newSudoku.StartState = ""*/
+	//return newSudoku.Puzzle
+	newSudoku.StartState = ""
+	//post request to mongodb
 }
 
 // mongo db connection function
