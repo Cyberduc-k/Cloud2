@@ -8,72 +8,39 @@ projects:
     git:
       remotes:
         origin: https://github.com/Cyberduc-k/Cloud2.git
-# parent:
-#   id: go
-#   registryUrl: 'https://registry.devfile.io'
 components:
-  - name: users-build
-    image:
-      imageName: users-image:latest
-      dockerfile:
-        uri: docker/users
+  - name: users
+    container:
+      image: users-image
+      build:
+        dockerfile: docker/users
         buildContext: .
-        rootRequired: true
-  - name: start-sudoku-build
-    image:
-      imageName: start-sudoku-image:latest
-      dockerfile:
-        uri: docker/startSudoku
-        buildContext: .
-        rootRequired: true
-  - name: users-deploy
-    attributes:
-      deployment/replicas: 1
-      deployment/cpuLimit: 100m
-      deployment/cpuRequest: 10m
-      deployment/memoryLimit: 100Mi
-      deployment/memoryRequest: 10Mi
-      deployment/container-port: 8081
-    kubernetes:
-      uri: kubernetes/users.yaml
+        rootRequired: false
       endpoints:
         - name: http-users
           targetPort: 8081
-          path: /users
-  - name: start-sudoku-deploy
-    attributes:
-      deployment/replicas: 1
-      deployment/cpuLimit: 100m
-      deployment/cpuRequest: 10m
-      deployment/memoryLimit: 100Mi
-      deployment/memoryRequest: 10Mi
-      deployment/container-port: 8081
-    kubernetes:
-      uri: kubernetes/startSudoku.yaml
+  - name: start-sudoku
+    container:
+      image: start-sudoku-image
+      build:
+        dockerfile: docker/startSudoku
+        buildContext: .
+        rootRequired: false
       endpoints:
         - name: http-start
           targetPort: 8082
-          path: /sudokus/start
 commands:
-  - id: build-users
-    apply:
-      component: users-build
-  - id: build-start-sudoku
-    apply:
-      component: start-sudoku-build
-  - id: deploy-users
-    apply:
-      component: users-deploy
-  - id: deploy-start-sudoku
-    apply:
-      component: start-sudoku-deploy
-  - id: deploy
-    composite:
-      commands:
-        - build-users
-        - build-start-sudoku
-        - deploy-users
-        - deploy-start-sudoku
+  - id: run-users
+    exec:
+      component: users
+      commandLine: /app/bin/users
       group:
-        kind: deploy
+        kind: run
         isDefault: true
+  - id: run-start-sudoku
+    exec:
+      component: start-sudoku
+      commandLine: /app/bin/startSudoku
+      group:
+        kind: run
+        isDefault: false
