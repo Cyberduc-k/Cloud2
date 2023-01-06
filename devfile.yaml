@@ -10,6 +10,7 @@ projects:
         origin: https://github.com/Cyberduc-k/Cloud2.git
 components:
   - name: users
+    type: container
     container:
       image: users-image
       endpoints:
@@ -20,6 +21,7 @@ components:
       buildContext: .
       rootRequired: false
   - name: start-sudoku
+    type: container
     container:
       image: start-sudoku-image
       endpoints:
