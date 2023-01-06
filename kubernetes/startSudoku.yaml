@@ -30,7 +30,7 @@ metadata:
   name: sudokus-start-service
 spec:
 ports:
-  - name: http-start-sudoku
+  - name: http-start
     port: 8082
     protocol: TCP
     targetPort: 8081

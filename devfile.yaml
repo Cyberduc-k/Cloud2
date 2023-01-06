@@ -51,7 +51,7 @@ components:
     kubernetes:
       uri: kubernetes/startSudoku.yaml
       endpoints:
-        - name: http-start-sudoku
+        - name: http-start
           targetPort: 8081
           path: /sudokus/start
 commands:
