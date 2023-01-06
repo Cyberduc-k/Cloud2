@@ -12,23 +12,23 @@ components:
   - name: users
     container:
       image: users-image
-      build:
-        dockerfile: docker/users
-        buildContext: .
-        rootRequired: false
       endpoints:
         - name: http-users
           targetPort: 8081
+    build:
+      dockerfile: docker/users
+      buildContext: .
+      rootRequired: false
   - name: start-sudoku
     container:
       image: start-sudoku-image
-      build:
-        dockerfile: docker/startSudoku
-        buildContext: .
-        rootRequired: false
       endpoints:
         - name: http-start
           targetPort: 8082
+    build:
+      dockerfile: docker/startSudoku
+      buildContext: .
+      rootRequired: false
 commands:
   - id: run-users
     exec:
