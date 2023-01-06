@@ -12,6 +12,11 @@ projects:
 #   id: go
 #   registryUrl: 'https://registry.devfile.io'
 components:
+  - name: ignore
+    container:
+      image: registry.access.redhat.com/ubi9/go-toolset:latest
+      args: ["tail", "-f", "/dev/null"]
+      memoryLimit: 1024Mi
   - name: users-build
     image:
       imageName: users-image:latest
