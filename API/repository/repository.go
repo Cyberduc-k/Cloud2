@@ -49,6 +49,22 @@ func (self *Repository[T]) GetAll() ([]T, error) {
 	return results, nil
 }
 
+func (self *Repository[T]) GetAllWhere(filter bson.M) ([]T, error) {
+	cursor, err := self.coll.Find(self.ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(self.ctx)
+	var results []T
+
+	if err = cursor.All(self.ctx, &results); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
 func (self *Repository[T]) GetById(id primitive.ObjectID) (T, error) {
 	result := self.coll.FindOne(self.ctx, bson.M{"_id": id})
 	var t T
