@@ -20,6 +20,7 @@ type Handler struct {
 	userRepo   repository.Repository[model.User]
 	sudokuRepo repository.Repository[model.Sudoku]
 	channel    *amqp.Channel
+	msgs       <-chan amqp.Delivery
 }
 
 func main() {
@@ -29,15 +30,40 @@ func main() {
 		log.Fatal(err)
 	}
 
-	rabbitConn, chl, err := setupRabbit("StartPuzzle")
+	rabbitConn, chl, err := setupRabbit()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer rabbitConn.Close()
+	defer chl.Close()
+
+	if err = setupQueue(chl, "StartPuzzle"); err != nil {
+		log.Fatal(err)
+	}
+
+	if err = setupQueue(chl, "GeneratePuzzle"); err != nil {
+		log.Fatal(err)
+	}
+
+	//consume messages from the GeneratePuzzle RabbitMQ Queue (assuming that all queued messages here mean that a new puzzle has been generated)
+	msgs, err := chl.Consume(
+		"GeneratePuzzle", // queue
+		"StartPuzzle",    // consumer
+		true,             // auto-ack
+		false,            // exclusive
+		false,            // no-local
+		false,            // no-wait
+		nil,              // args
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	userRepo := repository.New[model.User](ctx, client, "SudokuDB", "Users")
 	sudokuRepo := repository.New[model.Sudoku](ctx, client, "SudokuDB", "Sudokus")
-	handler := Handler{userRepo, sudokuRepo, chl}
+	handler := Handler{userRepo, sudokuRepo, chl, msgs}
 	router := mux.NewRouter()
 
 	router.HandleFunc("/sudokus/start", handler.startSudoku).Methods("POST")
@@ -75,7 +101,19 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 		},
 	)
 
-	writeResponse(writer, http.StatusOK, model.StartSudokuResponse{Id: sudokuId})
+	forever := make(chan struct{})
+
+	go func() {
+		for d := range self.msgs {
+			log.Printf("Received a message: %s", d.Body)
+			writeResponse(writer, http.StatusOK, model.StartSudokuResponse{Id: sudokuId})
+			// cancel the forever
+			forever <- struct{}{}
+			return
+		}
+	}()
+
+	<-forever
 }
 
 func setupMongo(ctx context.Context) (*mongo.Client, error) {
@@ -87,18 +125,18 @@ func setupMongo(ctx context.Context) (*mongo.Client, error) {
 	return repository.NewClient(ctx, connString)
 }
 
-func setupRabbit(queueName string) (*amqp.Connection, *amqp.Channel, error) {
+func setupRabbit() (*amqp.Connection, *amqp.Channel, error) {
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672")
 	if err != nil {
 		return nil, nil, err
 	}
 
 	chl, err := conn.Channel()
-	if err != nil {
-		return nil, nil, err
-	}
+	return conn, chl, err
+}
 
-	_, err = chl.QueueDeclare(
+func setupQueue(chl *amqp.Channel, queueName string) error {
+	_, err := chl.QueueDeclare(
 		queueName,
 		false,
 		false,
@@ -107,7 +145,7 @@ func setupRabbit(queueName string) (*amqp.Connection, *amqp.Channel, error) {
 		nil,
 	)
 
-	return conn, chl, err
+	return err
 }
 
 func writeResponse[T any](w http.ResponseWriter, code int, data T) {

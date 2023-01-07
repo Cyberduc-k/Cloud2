@@ -44,13 +44,21 @@ func main() {
 	}
 
 	//rabbitMQ Queue connection setup
-	rabbitConn, chl, err := rabbitSetup("StartPuzzle")
+	rabbitConn, chl, err := setupRabbit()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer rabbitConn.Close()
 	defer chl.Close()
+
+	if err = setupQueue(chl, "StartPuzzle"); err != nil {
+		log.Fatal(err)
+	}
+
+	if err = setupQueue(chl, "GeneratePuzzle"); err != nil {
+		log.Fatal(err)
+	}
 
 	//var definition/creation of repo, handler & router (do I need these here?)
 	sudokuRepo := repository.New[model.Sudoku](ctx, client, "SudokuDB", "Sudokus")
@@ -91,8 +99,23 @@ func generateSudoku(sudokuId []byte, handler Handler) {
 		log.Fatal(err)
 	}
 
+	log.Println(newSudoku.StartState)
+	log.Println(newSudoku.Solution)
+
 	//return newSudoku.Puzzle
 	//post request to mongodb
+
+	// communicate to startSudoku that the sudoku has been generated
+	handler.channel.Publish(
+		"",
+		"GeneratePuzzle",
+		false,
+		false,
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte{0},
+		},
+	)
 }
 
 // mongo db connection function
@@ -105,19 +128,19 @@ func setupMongo(ctx context.Context) (*mongo.Client, error) {
 	return repository.NewClient(ctx, connString)
 }
 
-// rabbitMQ queue, connection & channel declaration (in case the queue doesn't exist)
-func rabbitSetup(queueName string) (*amqp.Connection, *amqp.Channel, error) {
+// rabbitMQ connection & channel declaration
+func setupRabbit() (*amqp.Connection, *amqp.Channel, error) {
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672")
 	if err != nil {
 		return nil, nil, err
 	}
 
 	chl, err := conn.Channel()
-	if err != nil {
-		return nil, nil, err
-	}
+	return conn, chl, err
+}
 
-	_, err = chl.QueueDeclare(
+func setupQueue(chl *amqp.Channel, queueName string) error {
+	_, err := chl.QueueDeclare(
 		queueName,
 		false,
 		false,
@@ -126,7 +149,7 @@ func rabbitSetup(queueName string) (*amqp.Connection, *amqp.Channel, error) {
 		nil,
 	)
 
-	return conn, chl, err
+	return err
 }
 
 /*
