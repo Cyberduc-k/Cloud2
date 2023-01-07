@@ -11,10 +11,10 @@ type Sudoku struct {
 	Solution   string
 }
 
-func (Sudoku) Generate() Sudoku {
+func GenerateSudoku() Sudoku {
 	solution := sudoku.GenerateSolution()
 	mask := solution.MinimalMask()
 	puzzle := solution.ApplyMask(&mask)
 
-	return Sudoku{primitive.NewObjectID(), puzzle.String(), solution.String()}
+	return Sudoku{Id: primitive.NilObjectID, StartState: puzzle.String(), Solution: solution.String()}
 }

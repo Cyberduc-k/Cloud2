@@ -62,6 +62,7 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 
 	log.Println(user)
 	sudokuId := primitive.NewObjectID()
+	bytes, _ := sudokuId.MarshalText()
 
 	self.channel.Publish(
 		"",
@@ -70,7 +71,7 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        []byte(sudokuId.Hex()),
+			Body:        bytes,
 		},
 	)
 

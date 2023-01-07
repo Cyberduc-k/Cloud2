@@ -84,14 +84,14 @@ func main() {
 }
 
 func generateSudoku(sudokuId []byte, handler Handler) {
+	newSudoku := model.GenerateSudoku()
 
-	newSudoku := model.Sudoku{
-		Id:         MyObjectID(sudokuId),
-		StartState: model.Sudoku.Generate(model.Sudoku{}).StartState,
-		Solution:   model.Sudoku.Generate(model.Sudoku{}).StartState,
+	// set sudoku id
+	if err := newSudoku.Id.UnmarshalText(sudokuId); err != nil {
+		log.Fatal(err)
 	}
+
 	//return newSudoku.Puzzle
-	newSudoku.StartState = ""
 	//post request to mongodb
 }
 

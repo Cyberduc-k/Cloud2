@@ -3,6 +3,7 @@ module api
 go 1.19
 
 require (
+	github.com/direvus/sudoku v0.0.0-20180717043528-827fd2abffac
 	github.com/gorilla/mux v1.8.0
 	github.com/streadway/amqp v1.0.0
 	go.mongodb.org/mongo-driver v1.11.1
