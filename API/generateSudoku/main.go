@@ -102,8 +102,8 @@ func generateSudoku(sudokuId []byte, handler Handler) {
 	log.Println(newSudoku.StartState)
 	log.Println(newSudoku.Solution)
 
-	//return newSudoku.Puzzle
-	//post request to mongodb
+	//insert the new sudoku puzzle into the context sudoku repository (connected to the mongodb sudoku database)
+	handler.sudokuRepo.Insert(newSudoku)
 
 	// communicate to startSudoku that the sudoku has been generated
 	handler.channel.Publish(
