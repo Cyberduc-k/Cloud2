@@ -5,10 +5,10 @@ import (
 )
 
 type User struct {
-	Id            primitive.ObjectID `bson:"_id,omitempty"`
-	Username      string
-	Password      string
-	SolvedSudokus []SolvedSudoku
+	Id       primitive.ObjectID `bson:"_id,omitempty"`
+	Username string
+	Password string
+	Sudokus  []SolvedSudoku
 }
 
 func NewUser(username, password string) User {

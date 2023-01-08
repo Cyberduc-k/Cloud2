@@ -86,6 +86,11 @@ func (self *Repository[T]) Insert(value T) (primitive.ObjectID, error) {
 	return primitive.NilObjectID, err
 }
 
+func (self *Repository[T]) Update(id primitive.ObjectID, value interface{}) error {
+	_, err := self.coll.UpdateByID(self.ctx, id, value)
+	return err
+}
+
 func (self *Repository[T]) Delete(id primitive.ObjectID) error {
 	_, err := self.coll.DeleteOne(self.ctx, bson.M{"_id": id})
 	return err

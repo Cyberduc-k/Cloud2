@@ -9,9 +9,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/streadway/amqp"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -87,6 +89,37 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	}
 
 	log.Println(user)
+	completed := make([]primitive.ObjectID, 0, len(user.Sudokus))
+
+	// check if the user has any unfinished sudokus
+	for _, progress := range user.Sudokus {
+		if !progress.IsSolved() {
+			update := bson.M{"$set": bson.M{"datestarted": time.Now()}}
+			if err := self.userRepo.Update(user.Id, update); err != nil {
+				log.Fatal(err)
+			}
+
+			self.returnSudoku(writer, progress.SudokuId)
+			return
+		}
+
+		completed = append(completed, progress.SudokuId)
+	}
+
+	// check if there are any sudokus the user hasn't done
+	filter := bson.M{"_id": bson.M{"$not": bson.M{"$in": completed}}}
+	uncompletedSudokus, err := self.sudokuRepo.GetAllWhere(filter)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, sudoku := range uncompletedSudokus {
+		self.onSudokuCreated(sudoku.Id, user)
+		self.returnSudoku(writer, sudoku.Id)
+		return
+	}
+
+	// genreate a new sudoku
 	sudokuId := primitive.NewObjectID()
 	bytes, _ := sudokuId.MarshalText()
 
@@ -106,7 +139,8 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	go func() {
 		for d := range self.msgs {
 			log.Printf("Received a message: %s", d.Body)
-			writeResponse(writer, http.StatusOK, model.StartSudokuResponse{Id: sudokuId})
+			self.onSudokuCreated(sudokuId, user)
+			self.returnSudoku(writer, sudokuId)
 			// cancel the forever
 			forever <- struct{}{}
 			return
@@ -114,6 +148,25 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	}()
 
 	<-forever
+}
+
+func (self *Handler) onSudokuCreated(sudokuId primitive.ObjectID, user model.User) {
+	progress := model.NewSolvedSudoku(sudokuId)
+	update := bson.M{"$push": bson.M{"sudokus": progress}}
+
+	if err := self.userRepo.Update(user.Id, update); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (self *Handler) returnSudoku(writer http.ResponseWriter, sudokuId primitive.ObjectID) {
+	sudoku, err := self.sudokuRepo.GetById(sudokuId)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	response := model.StartSudokuResponse{Id: sudokuId, StartState: sudoku.StartState}
+	writeResponse(writer, http.StatusOK, response)
 }
 
 func setupMongo(ctx context.Context) (*mongo.Client, error) {

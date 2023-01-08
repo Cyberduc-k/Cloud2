@@ -18,6 +18,10 @@ func NewSolvedSudoku(sudokuId primitive.ObjectID) SolvedSudoku {
 	return SolvedSudoku{SudokuId: sudokuId, DateStarted: dateStarted}
 }
 
+func (self *SolvedSudoku) IsSolved() bool {
+	return self.DateSolved != time.Time{}
+}
+
 func (self *SolvedSudoku) Solve() {
 	self.DateSolved = time.Now()
 	self.TimeToSolve = self.DateStarted.Sub(self.DateSolved)
