@@ -61,7 +61,7 @@ spec:
                 secretKeyRef:
                   key: database-password
                   name: mongodb
-          image: mongo:latest
+          image: registry.access.redhat.com/rhscl/mongodb-36-rhel7
           imagePullPolicy: IfNotPresent
           livenessProbe:
             initialDelaySeconds: 30
