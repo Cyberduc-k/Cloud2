@@ -50,9 +50,7 @@ spec:
     contextDir: .
   strategy:
     dockerStrategy:
-      from:
-        kind: Dockerfile
-        dockerfilePath: ./docker/users
+      dockerfilePath: docker/users
   output:
     to:
       kind: ImageStreamTag
