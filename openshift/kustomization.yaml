@@ -12,11 +12,11 @@ resources:
 
 images:
   - name: users
-    newName: image-registry.openshift-image-registry.svc:5000/sudokus/users
+    newName: image-registry.openshift-image-registry.svc:5000/fluix-dev/users
     newTag: latest
   - name: start-sudoku
-    newName: image-registry.openshift-image-registry.svc:5000/sudokus/start
+    newName: image-registry.openshift-image-registry.svc:5000/fluix-dev/start-sudoku
     newTag: latest
   - name: generate-sudoku
-    newName: image-registry.openshift-image-registry.svc:5000/sudokus/generate
+    newName: image-registry.openshift-image-registry.svc:5000/fluix-dev/generate-sudoku
     newTag: latest
