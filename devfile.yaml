@@ -15,7 +15,7 @@ components:
       dockerfile:
         uri: docker/dockerfile
         buildContext: .
-        rotRequired: false
+        rootRequired: false
   - name: users
     type: container
     container:
