@@ -47,14 +47,12 @@ spec:
     git:
       uri: "https://github.com/Cyberduc-k/Cloud2.git"
       ref: main
-    contextDir: API
+    contextDir: .
   strategy:
-    type: Source
-    sourceStrategy:
+    dockerStrategy:
       from:
-        kind: ImaegStreamTag
-        name: registry.access.redhat.com/ubi9/go-toolset
-        namespace: openshift
+        kind: Dockerfile
+        dockerfilePath: ./docker/users
   output:
     to:
       kind: ImageStreamTag
@@ -91,7 +89,7 @@ spec:
       containers:
         - name: users
           image: users:latest
-          imagePullPolicy: always
+          imagePullPolicy: Always
           env:
             - name: MONGODB_USER
               valueFrom:

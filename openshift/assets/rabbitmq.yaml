@@ -42,7 +42,7 @@ spec:
       port: 5671
       protocol: TCP
       targetPort: 5671
-    - name: 15671-tcp
+    - name: 5672-tcp
       nodePort: 0
       port: 5672
       protocol: TCP
