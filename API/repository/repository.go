@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"api/model"
 	"context"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -94,4 +95,16 @@ func (self *Repository[T]) Update(id primitive.ObjectID, value interface{}) erro
 func (self *Repository[T]) Delete(id primitive.ObjectID) error {
 	_, err := self.coll.DeleteOne(self.ctx, bson.M{"_id": id})
 	return err
+}
+
+func (self *Repository[T]) Login(user model.User) (model.User, error) {
+	var result model.User
+	err := self.coll.FindOne(context.TODO(), bson.M{"Username": user.Username, "Password": user.Password}).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return model.User{}, err
+		}
+		return model.User{}, err
+	}
+	return result, nil
 }
