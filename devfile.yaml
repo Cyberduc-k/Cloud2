@@ -17,14 +17,12 @@ components:
         buildContext: .
         rootRequired: false
   - name: users
-    type: container
     container:
       image: sudokus-image:latest
       endpoints:
         - name: http-users
           targetPort: 8081
   - name: start-sudoku
-    type: container
     container:
       image: sudokus-image:latest
       endpoints:
