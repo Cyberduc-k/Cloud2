@@ -105,8 +105,8 @@ spec:
           resources:
             limits:
               memory: 512Mi
-            requests:
-              cpu: 1
+            # requests:
+            #   cpu: 1
 ---
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v1
