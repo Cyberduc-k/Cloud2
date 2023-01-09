@@ -1,0 +1,124 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: users
+  annotations:
+    prometheus.io/scrape: true
+  labels:
+    app: users
+spec:
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: users
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: users
+  labels:
+    app: users
+spec:
+  path: /users
+  to:
+    kind: Service
+    name: users
+  tls:
+    termination: edge
+---
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: users
+  labels:
+    app: users
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: users
+  labels:
+    app: users
+spec:
+  source:
+    type: Git
+    git:
+      uri: "https://github.com/Cyberduc-k/Cloud2.git"
+      ref: main
+    contextDir: .
+  strategy:
+    dockerStrategy:
+      dockerfilePath: docker/users
+  output:
+    to:
+      kind: ImageStreamTag
+      name: users:latest
+  triggers:
+    - type: ConfigChange
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: users
+  labels:
+    app: users
+spec:
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - users
+        from:
+          kind: ImageStreamTag
+          name: users:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      name: users
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: users:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: mongodb
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: mongodb
+          ports:
+            - containerPort: 8081
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 1
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1
+metadata:
+  name: users
+  labels:
+    app: users
+spec:
+  maxReplicas: 1
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: users
+  targetCPUUtilizationPercentage: 70

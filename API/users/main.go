@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -18,9 +19,9 @@ type Handler struct {
 
 func main() {
 	ctx := context.Background()
-	user := "admin"
-	pass := "admin"
-	conn := "localhost"
+	user := os.Getenv("MONGODB_USER")
+	pass := os.Getenv("MONGODB_PASSWORD")
+	conn := os.Getenv("MONGODB_CONNECTION")
 	client, err := repository.NewClient(ctx, fmt.Sprintf("mongodb://%s:%s@%s:27017", user, pass, conn))
 
 	if err != nil {

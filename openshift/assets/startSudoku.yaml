@@ -1,0 +1,124 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: start-sudoku
+  annotations:
+    prometheus.io/scrape: true
+  labels:
+    app: start-sudoku
+spec:
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: start-sudoku
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: start-sudoku
+  labels:
+    app: start-sudoku
+spec:
+  path: /sudokus/start
+  to:
+    kind: Service
+    name: start-sudoku
+  tls:
+    termination: edge
+---
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: start-sudoku
+  labels:
+    app: start-sudoku
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: start-sudoku
+  labels:
+    app: start-sudoku
+spec:
+  source:
+    type: Git
+    git:
+      uri: "https://github.com/Cyberduc-k/Cloud2.git"
+      ref: main
+    contextDir: .
+  strategy:
+    dockerStrategy:
+      dockerfilePath: docker/startSudoku
+  output:
+    to:
+      kind: ImageStreamTag
+      name: start-sudoku:latest
+  triggers:
+    - type: ConfigChange
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: start-sudoku
+  labels:
+    app: start-sudoku
+spec:
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - start-sudoku
+        from:
+          kind: ImageStreamTag
+          name: start-sudoku:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: start-sudoku
+  template:
+    metadata:
+      name: start-sudoku
+      labels:
+        app: start-sudoku
+    spec:
+      containers:
+        - name: start-sudoku
+          image: start-sudoku:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: mongodb
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: mongodb
+          ports:
+            - containerPort: 8081
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 1
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1
+metadata:
+  name: start-sudoku
+  labels:
+    app: start-sudoku
+spec:
+  maxReplicas: 1
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: start-sudoku
+  targetCPUUtilizationPercentage: 70
