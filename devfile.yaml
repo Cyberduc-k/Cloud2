@@ -9,28 +9,27 @@ projects:
       remotes:
         origin: https://github.com/Cyberduc-k/Cloud2.git
 components:
+  - name: image-build
+    image:
+      imageName: sudokus-image:latest
+      dockerfile:
+        uri: docker/dockerfile
+        buildContext: .
+        rotRequired: false
   - name: users
     type: container
     container:
-      image: users-image
+      image: sudokus-image:latest
       endpoints:
         - name: http-users
           targetPort: 8081
-    build:
-      dockerfile: docker/users
-      buildContext: .
-      rootRequired: false
   - name: start-sudoku
     type: container
     container:
-      image: start-sudoku-image
+      image: sudokus-image:latest
       endpoints:
         - name: http-start
           targetPort: 8082
-    build:
-      dockerfile: docker/startSudoku
-      buildContext: .
-      rootRequired: false
 commands:
   - id: run-users
     exec:
