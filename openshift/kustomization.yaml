@@ -7,8 +7,8 @@ resources:
   # - assets/mongodb.yaml
   # - assets/rabbitmq.yaml
   - assets/users.yaml
-  # - assets/startSudoku.yaml
-  # - assets/generateSudoku.yaml
+  - assets/startSudoku.yaml
+  - assets/generateSudoku.yaml
 
 images:
   - name: users
