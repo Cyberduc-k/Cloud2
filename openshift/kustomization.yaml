@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: fluix-dev
+
+resources:
+  - assets/mongodb.yaml
+  - assets/rabbitmq.yaml
+  - assets/users.yaml
+  # - assets/startSudoku.yaml
+  # - assets/generateSudoku.yaml
+
+images:
+  - name: users
+    newName: image-registry.openshift-image-registry.svc:5000/sudokus/users
+    newTag: latest
+  - name: start-sudoku
+    newName: image-registry.openshift-image-registry.svc:5000/sudokus/start
+    newTag: latest
+  - name: generate-sudoku
+    newName: image-registry.openshift-image-registry.svc:5000/sudokus/generate
+    newTag: latest
