@@ -179,8 +179,10 @@ func setupMongo(ctx context.Context) (*mongo.Client, error) {
 }
 
 func setupRabbit() (*amqp.Connection, *amqp.Channel, error) {
+	user := os.Getenv("RABBITMQ_USER")
+	pass := os.Getenv("RABBITMQ_PASSWORD")
 	hostname := os.Getenv("RABBITMQ_CONNECTION")
-	conn, err := amqp.Dial(fmt.Sprintf("amqp://guest:guest@%s:5672", hostname))
+	conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:5672", user, pass, hostname))
 	if err != nil {
 		return nil, nil, err
 	}

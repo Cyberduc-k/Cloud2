@@ -3,10 +3,9 @@ WORKDIR /app
 USER root
 
 COPY ./API ./
-RUN go mod download
 
-RUN mkdir bin
-RUN go build -o /app/bin/startSudoku ./startSudoku
+RUN go mod download
+RUN go build -o ./bin/login ./users
 
 FROM ubuntu:latest
 
@@ -16,4 +15,4 @@ COPY --from=builder /app/bin ./
 
 EXPOSE 8081
 
-CMD ["/app/startSudoku"]
+CMD ["/app/login"]
