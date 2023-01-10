@@ -157,6 +157,13 @@ func (self *Handler) onSudokuCreated(sudokuId primitive.ObjectID, user model.Use
 	if err := self.userRepo.Update(user.Id, update); err != nil {
 		log.Fatal(err)
 	}
+
+	user.CurrentSudokuId = sudokuId
+	setup := bson.M{"$set": bson.M{"currentsudoku": user.CurrentSudokuId}}
+	if err := self.userRepo.Update(user.Id, setup); err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 func (self *Handler) returnSudoku(writer http.ResponseWriter, sudokuId primitive.ObjectID) {
