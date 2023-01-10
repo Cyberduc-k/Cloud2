@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  mongo:
+  mongodb:
     image: mongo:latest
     restart: always
     ports:
@@ -16,36 +16,53 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  login:
-    image: login-image
-    build:
-      dockerfile: docker/users
-    ports:
-      - 8081:8081
-    environment:
-      MONGODB_USER: '${MONGODB_USER:-admin}'
-      MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
-      MONGODB_CONNECTION: '${MONGODB_CONNECTION:-localhost}'
-      RABBITMQ_CONNECTION: '${RABBITMQ_CONNECTION:-localhost}'
-  startSudoku:
-    image: start-sudoku-image
-    build:
-      dockerfile: docker/startSudoku
-    ports:
-      - 8081:8081
-    environment:
-      MONGODB_USER: '${MONGODB_USER:-admin}'
-      MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
-      MONGODB_CONNECTION: '${MONGODB_CONNECTION:-localhost}'
-      RABBITMQ_CONNECTION: '${RABBITMQ_CONNECTION:-localhost}'
-  generateSudoku:
-    image: generate-sudoku-image
-    build:
-      dockerfile: docker/generateSudoku
-    ports:
-      - 8081:8081
-    environment:
-      MONGODB_USER: '${MONGODB_USER:-admin}'
-      MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
-      MONGODB_CONNECTION: '${MONGODB_CONNECTION:-localhost}'
-      RABBITMQ_CONNECTION: '${RABBITMQ_CONNECTION:-localhost}'
+    # environment:
+    #   RABBITMQ_DEFAULT_USER: guest
+    #   RABBITMQ_DEFAULT_PASS: guest
+  # login:
+  #   image: sudokus/login
+  #   build:
+  #     context: .
+  #     dockerfile: docker/users
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+  #   environment:
+  #     MONGODB_USER: '${MONGODB_USER:-admin}'
+  #     MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
+  #     MONGODB_CONNECTION: '${MONGODB_CONNECTION:-localhost}'
+  #     RABBITMQ_CONNECTION: '${RABBITMQ_CONNECTION:-localhost}'
+  # startSudoku:
+  #   image: sudokus/start
+  #   build:
+  #     context: .
+  #     dockerfile: docker/startSudoku
+  #   ports:
+  #     - 8082:8081
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+  #   restart: on-failure
+  #   environment:
+  #     MONGODB_USER: '${MONGODB_USER:-admin}'
+  #     MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
+  #     MONGODB_CONNECTION: '${MONGODB_CONNECTION:-localhost}'
+  #     RABBITMQ_CONNECTION: '${RABBITMQ_CONNECTION:-localhost}'
+  # generateSudoku:
+  #   image: sudokus/generate
+  #   build:
+  #     context: .
+  #     dockerfile: docker/generateSudoku
+  #   ports:
+  #     - 8083:8081
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+  #   restart: on-failure
+  #   environment:
+  #     MONGODB_USER: '${MONGODB_USER:-admin}'
+  #     MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
+  #     MONGODB_CONNECTION: '${MONGODB_CONNECTION:-localhost}'
+  #     RABBITMQ_CONNECTION: '${RABBITMQ_CONNECTION:-localhost}'

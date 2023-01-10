@@ -99,7 +99,7 @@ func (self *Repository[T]) Delete(id primitive.ObjectID) error {
 
 func (self *Repository[T]) Login(user model.User) (model.User, error) {
 	var result model.User
-	err := self.coll.FindOne(context.TODO(), bson.M{"Username": user.Username, "Password": user.Password}).Decode(&result)
+	err := self.coll.FindOne(self.ctx, bson.M{"username": user.Username, "password": user.Password}).Decode(&result)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return model.User{}, err
