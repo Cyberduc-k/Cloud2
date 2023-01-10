@@ -57,6 +57,19 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 		log.Fatal(err)
 	}
 
+	userSolution := request.FormValue("Solution")
+	sudoku, err := self.sudokuRepo.GetById(user.CurrentSudokuId)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//check if the puzzle is incorrect (if so, then return)
+	if userSolution != sudoku.Solution {
+		response := "Incorrect sudoku solution, please try again"
+		writeResponse(writer, http.StatusOK, response)
+		return
+	}
+
 	for i := range user.Sudokus {
 		progress := &user.Sudokus[i]
 		if !progress.IsSolved() && progress.SudokuId == user.CurrentSudokuId {
