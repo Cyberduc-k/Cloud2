@@ -18,7 +18,8 @@ import (
 )
 
 type Handler struct {
-	userRepo repository.Repository[model.User]
+	userRepo   repository.Repository[model.User]
+	sudokuRepo repository.Repository[model.Sudoku]
 }
 
 type MyObjectID string
@@ -31,7 +32,8 @@ func main() {
 	}
 
 	userRepo := repository.New[model.User](ctx, client, "SudokuDB", "Users")
-	handler := Handler{userRepo}
+	sudokuRepo := repository.New[model.Sudoku](ctx, client, "SudokuDB", "Sudokus")
+	handler := Handler{userRepo, sudokuRepo}
 	router := mux.NewRouter()
 
 	router.HandleFunc("/sudokus/finish", handler.stopSudoku).Methods("POST")
@@ -57,7 +59,7 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 
 	for i := range user.Sudokus {
 		progress := &user.Sudokus[i]
-		if !progress.IsSolved() {
+		if !progress.IsSolved() && progress.SudokuId == user.CurrentSudokuId {
 			progress.Solve()
 
 			update := bson.M{"$set": bson.M{"sudokus": user.Sudokus}}
@@ -66,6 +68,14 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 			}
 			response := ""
 			writeResponse(writer, http.StatusOK, response)
+
+			//set currentsudokuId for the user back to a nil primitive object ID
+			user.CurrentSudokuId = primitive.NilObjectID
+			setup := bson.M{"$set": bson.M{"currentsudoku": user.CurrentSudokuId}}
+			if err := self.userRepo.Update(user.Id, setup); err != nil {
+				log.Fatal(err)
+			}
+
 			return
 		}
 	}
