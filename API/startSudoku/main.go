@@ -94,8 +94,9 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	// check if the user has any unfinished sudokus
 	for _, progress := range user.Sudokus {
 		if !progress.IsSolved() {
-			update := bson.M{"$set": bson.M{"datestarted": time.Now()}}
-			if err := self.userRepo.Update(user.Id, update); err != nil {
+			filter := bson.M{"_id": user.Id, "sudokus.sudokuid": progress.SudokuId}
+			update := bson.M{"$set": bson.M{"sudokus.$.datestarted": time.Now()}}
+			if err := self.userRepo.UpdateWhere(filter, update); err != nil {
 				log.Fatal(err)
 			}
 

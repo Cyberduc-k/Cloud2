@@ -1,7 +1,10 @@
 version: '3.1'
 services:
   mongodb:
-    image: mongo:latest
+    image: sudokus/mongo
+    build:
+      context: .
+      dockerfile: docker/mongodb
     restart: always
     ports:
       - 27017:27017
@@ -10,6 +13,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: '${MONGODB_USER:-admin}'
       MONGO_INITDB_ROOT_PASSWORD: '${MONGODB_PASSWORD:-admin}'
+      MONGO_INITDB_DATABASE: SudokuDB
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
@@ -25,6 +29,21 @@ services:
     build:
       context: .
       dockerfile: docker/login
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    environment:
+      MONGODB_USER: '${MONGODB_USER:-admin}'
+      MONGODB_PASSWORD: '${MONGODB_PASSWORD:-admin}'
+      MONGODB_CONNECTION: 'mongodb'
+  highscores:
+    image: sudokus/highscores
+    build:
+      context: .
+      dockerfile: docker/highscores
     ports:
       - 8081:8081
     depends_on:

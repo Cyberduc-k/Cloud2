@@ -92,6 +92,11 @@ func (self *Repository[T]) Update(id primitive.ObjectID, value interface{}) erro
 	return err
 }
 
+func (self *Repository[T]) UpdateWhere(filter bson.M, value interface{}) error {
+	_, err := self.coll.UpdateOne(self.ctx, filter, value)
+	return err
+}
+
 func (self *Repository[T]) Delete(id primitive.ObjectID) error {
 	_, err := self.coll.DeleteOne(self.ctx, bson.M{"_id": id})
 	return err

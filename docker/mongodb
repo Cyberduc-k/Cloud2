@@ -1,0 +1,3 @@
+FROM mongo:latest
+
+COPY mongodb.js /docker-entrypoint-initdb.d/
