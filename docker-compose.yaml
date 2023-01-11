@@ -45,7 +45,7 @@ services:
       context: .
       dockerfile: docker/highscores
     ports:
-      - 8081:8081
+      - 8082:8081
     depends_on:
       - mongodb
     links:
@@ -60,7 +60,7 @@ services:
       context: .
       dockerfile: docker/startSudoku
     ports:
-      - 8082:8081
+      - 8083:8081
     depends_on:
       - mongodb
       - rabbitmq
@@ -80,8 +80,6 @@ services:
     build:
       context: .
       dockerfile: docker/generateSudoku
-    ports:
-      - 8083:8081
     depends_on:
       - mongodb
       - rabbitmq
