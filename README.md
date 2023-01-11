@@ -2,7 +2,7 @@
 
 ## Setup
 This app can be run in two ways:
-1. Docker compose: run docker-compose, every microservice will be availbe on a different port. login: 8081, highscores: 8082, start: 8083, stop: 8084.
+1. Docker compose: run docker-compose, every microservice will be available on a different port. login: 8081, highscores: 8082, start: 8083, stop: 8084.
 2. Minikube/kubernetes.
 
 ## Minikube setup
