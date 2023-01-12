@@ -100,6 +100,12 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 				log.Fatal(err)
 			}
 
+			user.CurrentSudokuId = progress.SudokuId
+			setup := bson.M{"$set": bson.M{"currentsudokuid": user.CurrentSudokuId}}
+			if err := self.userRepo.Update(user.Id, setup); err != nil {
+				log.Fatal(err)
+			}
+
 			self.returnSudoku(writer, progress.SudokuId)
 			return
 		}
@@ -160,7 +166,7 @@ func (self *Handler) onSudokuCreated(sudokuId primitive.ObjectID, user model.Use
 	}
 
 	user.CurrentSudokuId = sudokuId
-	setup := bson.M{"$set": bson.M{"currentsudoku": user.CurrentSudokuId}}
+	setup := bson.M{"$set": bson.M{"currentsudokuid": user.CurrentSudokuId}}
 	if err := self.userRepo.Update(user.Id, setup); err != nil {
 		log.Fatal(err)
 	}

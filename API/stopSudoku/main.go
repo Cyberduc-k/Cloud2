@@ -36,7 +36,7 @@ func main() {
 	handler := Handler{userRepo, sudokuRepo}
 	router := mux.NewRouter()
 
-	router.HandleFunc("/sudokus/finish", handler.stopSudoku).Methods("POST")
+	router.HandleFunc("/sudokus/stop", handler.stopSudoku).Methods("POST")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)
@@ -51,12 +51,12 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 	}
 
 	log.Println(userId)
-
 	user, err := self.userRepo.GetById(userId)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	log.Println(user)
 	userSolution := request.FormValue("Solution")
 	sudoku, err := self.sudokuRepo.GetById(user.CurrentSudokuId)
 	if err != nil {
