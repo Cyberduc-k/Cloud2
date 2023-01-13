@@ -17,7 +17,7 @@ items:
           targetPort: 8081
           nodePort: 30040
       selector:
-        app: login
+        app: front
     status:
       loadBalancer: {}
   - apiVersion: apps/v1
@@ -38,7 +38,7 @@ items:
             app: front
         spec:
           containers:
-              image: sudokus/front
+            - image: sudokus/front
               imagePullPolicy: IfNotPresent
               name: front
               ports:
@@ -210,21 +210,6 @@ items:
     status: {}
   
   # GENERATE SUDOKU
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      labels:
-        app: generatesudoku
-      name: generatesudoku
-    spec:
-      ports:
-        - name: "8083"
-          port: 8083
-          targetPort: 8081
-      selector:
-        app: generatesudoku
-    status:
-      loadBalancer: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
