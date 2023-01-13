@@ -1,8 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
 </head>
 <body>
-    <h1>TEST</h1>
+    <main>
+        <section class="login-window">
+            <h1>Cloud 2 Sudoku application Login</h1>
+            <img class="sudoku-image" src="/assets/sudoku_wallpaper.png"/>
+                <form class="pure-form pure-form-stacked" name="login_form" onsubmit="login()">
+                    <fieldset>
+                        <section class="pure-control-group">
+                            <label for="stacked-username" class="labelText">Username</label>
+                            <input type="text" id="stacked-username" placeholder="JohnDoe" required/>
+                        </section>
+                        <section class="pure-control-group">
+                            <label for="stacked-password" class="labelText">Password</label>
+                            <input type="password" id="stacked-password" placeholder="J0hnny#1" required/>
+                        </section>
+                        <section class="pure-controls">
+                            <button type="submit" class="pure-button pure-button-primary">Login</button>
+                        </section>
+                    </fieldset>
+                </form>
+        </section>
+    </main>
+    <footer class="footer-class">
+        <label class="footer-team-label">Created By Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
+    </footer>
+    <script>
+        function login(){
+
+            var HOSTNAME = "http://127.0.0.1:8081";
+
+            var username = document.getElementById("stacked-username").value;
+            var password = document.getElementById("stacked-password").value;
+
+            let data = {Username: username, Password: password};
+
+            fetch(`${HOSTNAME}/login`, {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(data)
+            }).then(res => {
+                console.log("Request complete! response:", res);
+            });
+
+            //alert(`hello ${username} with password ${password}`);
+        }
+    </script>
 </body>
 </html>
