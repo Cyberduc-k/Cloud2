@@ -2,6 +2,51 @@ apiVersion: v1
 kind: List
 metadata: {}
 items:
+  # FRONT
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: front
+      name: front
+    spec:
+      type: NodePort
+      ports:
+        - name: "8090"
+          port: 8090
+          targetPort: 8081
+          nodePort: 30040
+      selector:
+        app: login
+    status:
+      loadBalancer: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: front
+      name: front
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: front
+      strategy: {}
+      template:
+        metadata:
+          labels:
+            app: front
+        spec:
+          containers:
+              image: sudokus/front
+              imagePullPolicy: IfNotPresent
+              name: front
+              ports:
+                - containerPort: 8081
+              resources: {}
+          restartPolicy: Always
+    status: {}
+
   # LOGIN
   - apiVersion: v1
     kind: Service

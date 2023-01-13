@@ -24,6 +24,13 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: '${RABBITMQ_USER:-admin}'
       RABBITMQ_DEFAULT_PASS: '${RABBITMQ_PASSWORD:-admin}'
+  front:
+    image: sudokus/front
+    build:
+      context: .
+      dockerfile: docker/front
+    ports:
+      - 8085:8081
   login:
     image: sudokus/login
     build:
