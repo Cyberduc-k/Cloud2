@@ -10,7 +10,7 @@
         <section class="login-window">
             <h1>Cloud 2 Sudoku application Login</h1>
             <img class="sudoku-image" src="/ui/assets/sudoku_wallpaper.png"/>
-                <form class="pure-form pure-form-stacked" name="login_form" onsubmit="login()">
+                <form class="pure-form pure-form-stacked" name="login_form" onsubmit="login(event)">
                     <fieldset>
                         <section class="pure-control-group">
                             <label for="stacked-username" class="labelText">Username</label>
@@ -31,8 +31,8 @@
         <label class="footer-team-label">Created By Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
     </footer>
     <script>
-        function login(){
-
+        function login(event){
+            event.preventDefault();
             var username = document.getElementById("stacked-username").value;
             var password = document.getElementById("stacked-password").value;
 
@@ -47,9 +47,14 @@
                 sessionStorage.setItem("User", res);
 
                 console.log("Request complete! response:", res);
-            });
 
-            //alert(`hello ${username} with password ${password}`);
+                //check if the user was retrieved and set
+                var user = sessionStorage.getItem("User");
+            
+                if(user != null || user != {}) {
+                    window.location.replace("http://localhost:8081/puzzles.html");
+                }
+            });
         }
     </script>
 </body>
