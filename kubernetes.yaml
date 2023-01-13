@@ -8,13 +8,13 @@ items:
     metadata:
       name: router
       annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
     spec:
       rules:
         - http:
             paths:
-              - path: /ui
-                pathType: Prefix
+              - path: /ui(/|$)(.*)
+                pathType: Exact
                 backend:
                   service:
                     name: front
