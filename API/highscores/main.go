@@ -33,7 +33,7 @@ func main() {
 	handler := Handler{repo}
 	router := mux.NewRouter()
 
-	router.HandleFunc("/users", handler.getHighscores).Methods("GET")
+	router.HandleFunc("/", handler.getHighscores).Methods("GET")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)

@@ -40,5 +40,6 @@ kubectl apply -f kubernetes.yaml
 
 Optionally you can open the dashboard with:
 ```sh
+minikube addons enable ingress
 minikube dashboard
 ```
