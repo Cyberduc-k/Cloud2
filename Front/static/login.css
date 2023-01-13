@@ -1,0 +1,53 @@
+main {
+    min-height: calc(94vh - 0.5em);
+    max-width: none;
+    padding: 0.25em 0.5em 0.25em 0.5em;
+    background-color: #393535;
+}
+
+.login-window {
+    margin: 40px auto;
+    width: 700px;
+    padding: 3em;
+    background-color: white;
+    border-radius: 25px;
+}
+
+.sudoku-image {
+    position: absolute;
+    width: 250px;
+    margin-left: 435px;
+    margin-top: 24px;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0.5em 0;
+    font-family: revert;
+}
+
+.pure-form, .pure-control-group, .pure-controls {
+    margin: 1em 0;
+}
+
+.labelText {
+    margin-bottom: 0.85em;
+}
+
+#stacked-username, #stacked-password {
+    width: 57%;
+}
+
+.footer-class {
+    background-color: #042058;
+}
+
+.footer-team-label {
+    margin: 0 auto;
+    width: 600px;
+    display: block;
+    padding: 20px;
+    font-family: 'comic sans ms';
+    font-size: 16px;
+    color: #fff;
+}
