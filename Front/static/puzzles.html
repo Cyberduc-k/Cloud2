@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="puzzles.css">
+    <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body onload="displayPuzzles()">
+    <main id="puzzles-main">
+        <section class="puzzles-window" id="puzzle-page">
+            <h1 class="header1-text">User Sudoku puzzles</h1>
+            <section class="sudoku-table-section" id="sudoku-section">
+                <table class="sudoku-table" id="sudoku">
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" name="0" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="pure-button pure-button-primary continue-button">Continue this puzzle</button>
+            </section>
+            <section class="pure-controls" id="start-new-button-section">
+                <button class="pure-button pure-button-primary" id="start-new-puzzle-button" onclick="startPuzzle()">Start new puzzle</button>
+            </section>
+        </section>
+    </main>
+    <footer class="footer-class">
+        <label class="footer-team-label">Created By Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
+    </footer>
+    <script>
+        function displayPuzzles(){
+            //pretend that this array is already an array filled with user sudoku data collected from the microservices and retrieved from stored session data
+            var array = ['1', '2', '3', '4', '5', '6'];
+            array.forEach(element => {
+                const node = document.getElementById("sudoku-section");
+                const clone = node.cloneNode(true);
+                document.getElementById("puzzle-page").appendChild(clone);
+            });
+
+            //make the original/first table disappear (hehehe)
+            var elements = document.getElementsByClassName('sudoku-table-section');
+            var firstTable = elements[0];
+            firstTable.style.display = 'none';
+
+            if(array.length  < 3) {
+
+                //var elements = document.getElementsByClassName('sudoku-table');
+                //elements.forEach(changeStyle);
+                /*elements[0].style.margin = '100px auto';
+                elements[0].style.display = 'table';*/
+
+                //array.forEach( (element) => { element.style.margin = '100px auto'; element.style.display = 'none';});
+                const elements = document.querySelectorAll(".sudoku-table");
+                //const elements = document.getElementsByClassName('sudoku-table');
+                elements.forEach(function (element) {
+                        element.style.margin = '100px auto';
+                        element.style.display = 'table';
+                });
+
+            }
+            
+            if(array.length == 0) {
+                var newPuzzleButton = document.getElementById("start-new-puzzle-button");
+                newPuzzleButton.style.display = 'inline';
+            }
+        }
+
+        /*function changeStyle(item){
+            item.style.margin = '100px auto';
+            item.style.display = 'table';
+        }*/
+
+        function startPuzzle(){
+
+        }
+
+        /*let sudoku = qsa('#sudoku')[0]
+        sudoku.onkeydown = function(event, test) {
+            log(event, test)
+        }
+
+        let log = console.log.bind(console)
+
+        function arr(list) {
+            for (let feat of Object.getOwnPropertyNames(Array.prototype))
+                if (!(feat in list))
+                    list[feat] = Array.prototype[feat]
+        }
+
+        function qsa() {
+            let [element, selector] = arguments
+            log(arguments, element, selector)
+            if (selector === undefined)
+                [element, selector] = [document, element]
+            return element.querySelectorAll(selector)
+        }*/
+    </script>
+</body>
+</html>

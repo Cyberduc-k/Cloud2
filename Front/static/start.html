@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="puzzles.css">
+    <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body onload="startPuzzle()">
+    <main>
+        <section class="puzzles-window">
+            <h1>Sudoku puzzles</h1>
+
+            <div id="timer">
+                <label>Time: </label>
+                <span id="hours">00:</span>
+                <span id="mins">00:</span>
+                <span id="seconds">00</span>  
+            </div>
+            <div id="controls">
+                <!--<button id="start">Start</button>-->
+                <button id="stop">Stop</button>
+                <button id="reset">Reset</button>
+            </div>
+
+        </section>
+    </main>
+    <footer class="footer-class">
+        <label class="footer-team-label">Created By Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
+    </footer>
+    <script>
+        function startPuzzle(){
+            startTimer();
+        }
+
+        var hours =0;
+        var mins =0;
+        var seconds =0;
+
+        $('#start').click(function(){
+            startTimer();
+        });
+
+        $('#stop').click(function(){
+            //alert(`elapsed time: ${hours} hours, ${mins} minutes & ${seconds} seconds.`);
+            clearTimeout(timex);
+        });
+
+        $('#reset').click(function(){
+            hours =0;      mins =0;      seconds =0;
+        $('#hours').html('00:');
+        $('#mins').html('00:');
+        $('#seconds').html('00');
+        });
+
+        function startTimer(){
+            timex = setTimeout(function(){
+                seconds++;
+                if(seconds >59){seconds=0;mins++;
+                if(mins>59) {
+                mins=0;hours++;
+                    if(hours <10) {$("#hours").text('0'+hours+':')} else $("#hours").text(hours+':');
+                                }
+                                
+                if(mins<10){                     
+                $("#mins").text('0'+mins+':');}       
+                else $("#mins").text(mins+':');
+                            }    
+                if(seconds <10) {
+                $("#seconds").text('0'+seconds);} else {
+                $("#seconds").text(seconds);
+                }
+                
+                startTimer();
+            },1000);
+        }        
+    </script>
+</body>
+</html>

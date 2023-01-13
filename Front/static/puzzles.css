@@ -1,0 +1,106 @@
+#puzzles-main{
+    margin-bottom:100px;
+}
+
+.header1-text{
+    font-size: 2em;
+    text-align: center;
+}
+
+.continue-button {
+    margin: 20px 117px;
+}
+
+.sudoku-table-section { 
+    margin: 25px 110px;
+    display: inline flow-root list-item;
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse; 
+    border-spacing: 0; 
+    font-family: 'comic sans ms', 'bauhaus 93';
+    font-size: 1.7em;
+}
+
+tr:first-child td {
+	border-top: 5px solid black;
+	border-top-color: black;
+}
+
+tr:nth-child(3n) td {
+	border-bottom: 5px solid black;
+}
+
+td {
+	border: 2px solid #a0999991;
+	height: 40px;
+	width: 40px;
+}
+
+td:first-child {
+	border-left: 5px solid black;
+}
+
+td:nth-child(3n) {
+	border-right: 5px solid black;
+}
+
+input {
+	padding: 0;
+	text-align: center;
+	border: 0;
+	height: 40px;
+	width: 40px;
+	text-align: center;
+}
+
+input:focus {
+    background: #a0999991;
+	outline: none;
+}
+
+input:hover {
+	background: #a0999991;
+}
+
+#start-new-button-section {
+    margin: auto;
+    width: 10%;
+}
+
+#start-new-puzzle-button {
+    display: none;
+}
+
+
+#timer {
+    font-size:100px;
+    margin:0 auto;
+    width:1000px;
+    font-family: 'comic sans ms', 'bauhaus 93';
+}
+  
+#controls {
+    margin:0 auto;
+    width:600px;    
+}
+  
+#controls button {
+    font-size:24px;
+}
+
+.footer-class {
+    background-color: #042058;
+}
+
+.footer-team-label {
+    margin: 0 auto;
+    width: 600px;
+    display: block;
+    padding: 20px;
+    font-family: 'comic sans ms';
+    font-size: 16px;
+    color: #fff;
+}
