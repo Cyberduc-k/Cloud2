@@ -36,7 +36,7 @@ func main() {
 	handler := Handler{userRepo, sudokuRepo}
 	router := mux.NewRouter()
 
-	router.HandleFunc("/sudokus/stop", handler.stopSudoku).Methods("POST")
+	router.HandleFunc("/", handler.stopSudoku).Methods("POST")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)
