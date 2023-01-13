@@ -10,7 +10,7 @@
         <section class="login-window">
             <h1>Cloud 2 Sudoku application Login</h1>
             <img class="sudoku-image" src="/ui/assets/sudoku_wallpaper.png"/>
-                <form class="pure-form pure-form-stacked" name="login_form" onsubmit="login()" action="puzzles.html">
+                <form class="pure-form pure-form-stacked" name="login_form" onsubmit="login()">
                     <fieldset>
                         <section class="pure-control-group">
                             <label for="stacked-username" class="labelText">Username</label>
@@ -33,14 +33,12 @@
     <script>
         function login(){
 
-            var HOSTNAME = "http://127.0.0.1:8081";
-
             var username = document.getElementById("stacked-username").value;
             var password = document.getElementById("stacked-password").value;
 
             let data = {Username: username, Password: password};
 
-            fetch(`${HOSTNAME}/login`, {
+            fetch(`/login`, {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'}, 
                 body: JSON.stringify(data)
