@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
-    <link rel="stylesheet" href="puzzles.css">
-    <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
+    <link rel="stylesheet" href="/ui/puzzles.css">
+    <link rel="icon" href="/ui/assets/sudoku.svg" sizes="any" type="image/svg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 <body onload="startPuzzle()">
     <main>
         <section class="puzzles-window">
-            <h1>Sudoku puzzles</h1>
+            <h1>Solving a soduku puzzle (started a puzzle)</h1>
 
             <div id="timer">
                 <label>Time: </label>
@@ -22,6 +22,8 @@
                 <button id="stop">Stop</button>
                 <button id="reset">Reset</button>
             </div>
+
+            <!-- TODO: remove the above control buttons, add other ones but first add a sudoku table from puzzles page here, along with the session and api fetch functionalities-->
 
         </section>
     </main>
