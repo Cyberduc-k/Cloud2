@@ -43,3 +43,6 @@ Optionally you can open the dashboard with:
 minikube addons enable ingress
 minikube dashboard
 ```
+
+## Testing
+When writing E2E tests use this [example](https://github.com/gavv/httpexpect/blob/master/_examples/fruits_test.go).

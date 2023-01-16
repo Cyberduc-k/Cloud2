@@ -26,6 +26,14 @@ type Handler struct {
 }
 
 func main() {
+	router := StartSudokuHandler()
+
+	if err := http.ListenAndServe(":8081", router); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func StartSudokuHandler() http.Handler {
 	ctx := context.Background()
 	client, err := setupMongo(ctx)
 	if err != nil {
@@ -70,9 +78,7 @@ func main() {
 
 	router.HandleFunc("/", handler.startSudoku).Methods("POST")
 
-	if err := http.ListenAndServe(":8081", router); err != nil {
-		log.Fatal(err)
-	}
+	return router
 }
 
 func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Request) {
