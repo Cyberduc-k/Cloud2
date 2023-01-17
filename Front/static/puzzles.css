@@ -1,10 +1,41 @@
 #puzzles-main{
-    margin-bottom:100px;
+    margin-bottom: 100px;
+}
+
+#solving-main {
+    margin-bottom: 100px;
+    min-height: 775px;
+}
+
+#quit-button-section{
+    float: right;
+    margin: auto;
+    width: 100px;
+}
+
+#quit-button, #logout-button, #finish-button{
+    padding: 10px 20px;
+    color: #ffffff;
+    text-shadow: 0 1px 1px #00000033;
+}
+
+#quit-button{
+    background: #d21a1a;
+}
+
+#logout-button{
+    background: #ca3c3c;
+}
+
+#finish-button{
+    margin: 20px 124px;
+    background-color: #319d0a;
 }
 
 .header1-text{
     font-size: 2em;
     text-align: center;
+    margin-left: 80px;
 }
 
 .continue-button {
@@ -15,6 +46,11 @@
     margin: 25px 110px;
     display: inline flow-root list-item;
     list-style: none;
+}
+
+#solve-sudoku-section{
+    margin: 20px auto;
+    width: 410px;
 }
 
 table {
@@ -74,17 +110,16 @@ input:hover {
     display: none;
 }
 
-
 #timer {
-    font-size:100px;
+    font-size: 48px;
     margin:0 auto;
-    width:1000px;
+    width: 388px;
     font-family: 'comic sans ms', 'bauhaus 93';
 }
   
 #controls {
     margin:0 auto;
-    width:600px;    
+    width: 210px;    
 }
   
 #controls button {
@@ -97,7 +132,7 @@ input:hover {
 
 .footer-team-label {
     margin: 0 auto;
-    width: 600px;
+    width: 735px;
     display: block;
     padding: 20px;
     font-family: 'comic sans ms';

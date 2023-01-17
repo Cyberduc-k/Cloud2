@@ -8,6 +8,9 @@
 </head>
 <body onload="displayPuzzles()">
     <main id="puzzles-main">
+        <section class="pure-controls" id="quit-button-section">
+            <button class="button-warning pure-button" id="logout-button" onclick="logout()">Logout</button>
+        </section>
         <section class="puzzles-window" id="puzzle-page">
             <h1 class="header1-text">User Sudoku puzzles</h1>
             <section class="sudoku-table-section" id="sudoku-section">
@@ -122,75 +125,64 @@
         </section>
     </main>
     <footer class="footer-class">
-        <label class="footer-team-label">Created By Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
+        <label class="footer-team-label">Created By Cloud Computing 2 Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
     </footer>
     <script>
         function displayPuzzles(){
             //pretend that this array is already an array filled with user sudoku data collected from the microservices and retrieved from stored session data
             var array = ['1', '2', '3', '4', '5', '6'];
+
+            canDisplayNewButton = true;
+
             array.forEach(element => {
                 const node = document.getElementById("sudoku-section");
                 const clone = node.cloneNode(true);
+
+                //check if the new puzzle button can be displayed
+                if(element.completed == false) {
+                    canDisplayNewButton = false;
+                }
+
+                //puzzlesArray = element.Puzzles;
+                //fill the sudoku table with the elements of the user puzzle
+                /*element.forEach(puzzle => {
+
+                })*/
+
                 document.getElementById("puzzle-page").appendChild(clone);
+                
             });
 
-            //make the original/first table disappear (hehehe)
+            //make the original/first table disappear
             var elements = document.getElementsByClassName('sudoku-table-section');
             var firstTable = elements[0];
             firstTable.style.display = 'none';
 
             if(array.length  < 3) {
-
-                //var elements = document.getElementsByClassName('sudoku-table');
-                //elements.forEach(changeStyle);
-                /*elements[0].style.margin = '100px auto';
-                elements[0].style.display = 'table';*/
-
-                //array.forEach( (element) => { element.style.margin = '100px auto'; element.style.display = 'none';});
                 const elements = document.querySelectorAll(".sudoku-table");
-                //const elements = document.getElementsByClassName('sudoku-table');
                 elements.forEach(function (element) {
                         element.style.margin = '100px auto';
                         element.style.display = 'table';
                 });
-
             }
             
-            if(array.length == 0) {
+            if(canDisplayNewButton) {
                 var newPuzzleButton = document.getElementById("start-new-puzzle-button");
                 newPuzzleButton.style.display = 'inline';
             }
         }
 
-        /*function changeStyle(item){
-            item.style.margin = '100px auto';
-            item.style.display = 'table';
-        }*/
-
         function startPuzzle(){
-
+            window.location.replace("/solving.html");
         }
 
-        /*let sudoku = qsa('#sudoku')[0]
-        sudoku.onkeydown = function(event, test) {
-            log(event, test)
+        function logout(){
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem("User");
+                window.location.replace("/index.html");
+            }
         }
 
-        let log = console.log.bind(console)
-
-        function arr(list) {
-            for (let feat of Object.getOwnPropertyNames(Array.prototype))
-                if (!(feat in list))
-                    list[feat] = Array.prototype[feat]
-        }
-
-        function qsa() {
-            let [element, selector] = arguments
-            log(arguments, element, selector)
-            if (selector === undefined)
-                [element, selector] = [document, element]
-            return element.querySelectorAll(selector)
-        }*/
     </script>
 </body>
 </html>
