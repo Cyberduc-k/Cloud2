@@ -135,7 +135,7 @@
                 <button id="reset" onclick="resetTimer()">Reset</button>
             </div>-->
 
-            <!-- TODO: remove the above control buttons, add other ones but first add a sudoku table from puzzles page here, along with the session and api fetch functionalities-->
+            <!-- TODO: add the session and api fetch functionalities-->
 
         </section>
     </main>
@@ -143,34 +143,29 @@
         <label class="footer-team-label">Created By Cloud Computing 2 Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
     </footer>
     <script>
+        //JQuery select the input when clicking on an input field
+        $("input[type='text']").on("click", function() {
+            $(this).select();
+        });
+        $("input").focus(function() {
+            $(this).select();
+        });
+        $("input").focusin(function() {
+            $(this).select();
+        });
+
+        var hours   = 0;
+        var mins    = 0;
+        var seconds = 0;
+
         function startPuzzle(){
             startTimer();
         }
 
-        var hours =0;
-        var mins =0;
-        var seconds =0;
-
-        /*$('#start').click(function(){
-            startTimer();
-        });
-
-        $('#stop').click(function(){
-            //alert(`elapsed time: ${hours} hours, ${mins} minutes & ${seconds} seconds.`);
-            clearTimeout(timex);
-        });
-
-        $('#reset').click(function(){
-            hours =0;      mins =0;      seconds =0;
-        $('#hours').html('00:');
-        $('#mins').html('00:');
-        $('#seconds').html('00');
-        });*/
-
         function startTimer(){
             timex = setTimeout(function(){
                 seconds++;
-                if(seconds >59) {
+                if(seconds > 59) {
                     seconds=0;mins++;
                     if(mins>59) {
                         mins=0;hours++;
@@ -205,9 +200,9 @@
         }
 
         function resetTimer(){
-            hours =0;
-            mins =0;
-            seconds =0;
+            hours   = 0;
+            mins    = 0;
+            seconds = 0;
             document.getElementById("hours").textContent = "00:";
             document.getElementById("mins").textContent = "00:";
             document.getElementById("seconds").textContent = "00";
@@ -217,7 +212,7 @@
             if (confirm('Are you sure you want to quit?')) {
                 stopTimer();
 
-                window.location.replace("/puzzles.html");
+                window.location.replace("/ui/puzzles.html");
             }
         }
 
