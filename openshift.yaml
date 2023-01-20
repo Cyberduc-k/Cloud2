@@ -83,8 +83,8 @@ items:
             app: front
         spec:
           containers:
-            - image: sudokus/front
-              imagePullPolicy: IfNotPresent
+            - image: ghcr.io/Cyberduc-k/sudokus-front
+              imagePullPolicy: Always
               name: front
               ports:
                 - containerPort: 8081
@@ -133,8 +133,8 @@ items:
                   value: admin
                 - name: MONGODB_USER
                   value: admin
-              image: sudokus/login
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/Cyberduc-k/sudokus-login
+              imagePullPolicy: Always
               name: login
               ports:
                 - containerPort: 8081
@@ -183,8 +183,8 @@ items:
                   value: admin
                 - name: MONGODB_USER
                   value: admin
-              image: sudokus/highscores
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/Cyberduc-k/sudokus-highscores
+              imagePullPolicy: Always
               name: highscores
               ports:
                 - containerPort: 8081
@@ -239,8 +239,8 @@ items:
                   value: bunny
                 - name: RABBITMQ_USER
                   value: bunny
-              image: sudokus/start
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/Cyberduc-k/sudokus-start
+              imagePullPolicy: Always
               name: startsudoku
               ports:
                 - containerPort: 8081
@@ -280,8 +280,8 @@ items:
                   value: bunny
                 - name: RABBITMQ_USER
                   value: bunny
-              image: sudokus/generate
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/Cyberduc-k/sudokus-generate
+              imagePullPolicy: Always
               name: generatesudoku
               ports:
                 - containerPort: 8081
@@ -330,8 +330,8 @@ items:
                   value: admin
                 - name: MONGODB_USER
                   value: admin
-              image: sudokus/stop
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/Cyberduc-k/sudokus-stop
+              imagePullPolicy: Always
               name: stopsudoku
               ports:
                 - containerPort: 8081
@@ -381,8 +381,8 @@ items:
                   value: admin
                 - name: MONGO_INITDB_DATABASE
                   value: SudokuDB
-              image: sudokus/mongo
-              imagePullPolicy: IfNotPresent
+              image: ghcr.io/Cyberduc-k/sudokus-mongo
+              imagePullPolicy: Always
               name: mongodb
               ports:
                 - containerPort: 27017
