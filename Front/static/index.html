@@ -44,12 +44,12 @@
                 body: JSON.stringify(data)
             }).then(res => {
                 //set the response user from the login go service in session storage
-                sessionStorage.setItem("User", res);
+                sessionStorage.setItem("User", JSON.stringify(res));
 
                 console.log("Request complete! response:", res);
 
                 //check if the user was retrieved and set
-                var user = sessionStorage.getItem("User");
+                var user = JSON.parse(sessionStorage.getItem("User"));
             
                 if(user != null || user != {}) {
                     window.location.replace("/ui/puzzles.html");

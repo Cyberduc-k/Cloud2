@@ -25,7 +25,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -36,7 +36,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -47,7 +47,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -58,7 +58,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -69,7 +69,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -80,7 +80,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -91,7 +91,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -102,7 +102,7 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                         <tr>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
@@ -113,14 +113,14 @@
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
                             <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
-                            <td><input type="text" class="sudoku-cell" maxlength="1"/></td>
+                            <td><input type="text" class="sudoku-cell" maxlength="1" name="sudoku-cell-edge"/></td>
                         </tr>
                     </tbody>
                 </table>
-                <button class="pure-button pure-button-primary continue-button">Continue this puzzle</button>
+                <button class="pure-button pure-button-primary previous-button" onclick="previousPuzzle(this.Id)">Look at this puzzle</button>
             </section>
             <section class="pure-controls" id="start-new-button-section">
-                <button class="pure-button pure-button-primary" id="start-new-puzzle-button" onclick="startPuzzle()">Start new puzzle</button>
+                <button class="pure-button pure-button-primary" id="start-new-puzzle-button" onclick="startNewPuzzle()">Start new puzzle</button>
             </section>
         </section>
     </main>
@@ -130,6 +130,10 @@
     <script>
 
         function displayPuzzles(){
+
+            var User = sessionStorage.getItem("User");
+
+           var actualPuzzlesArray = User.Puzzles;
 
             //now pretend that this is already the puzzles array part of the User object in session storage (only small adjustments to properly read this necessary)
             var puzzlesArray = [{"Id":"1", "StartState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","Solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"},
@@ -152,12 +156,15 @@
 
                 //console.log(`first string:\n${startStateString}`);
 
+                //remove new lines and spaces from the string
                 startStateString = startStateString.replace(/\r?\n|\r|\s/g, "");
 
                 //console.log(`new string: ${startStateString}`);
 
+                //define all the sudoku table input fields (the amount of cells is always (without exception) equal to the length of the array below)
                 sudokuCells = clone.getElementsByClassName('sudoku-cell');
 
+                //loop to set the value of the input fields in the table to the StartState values (don't set a value for an underscore (no number))
                 for (var i = 0; i < startStateString.length; i++) {
                     if(startStateString.charAt(i) == '_') {
                         sudokuCells[i].value = '';
@@ -167,6 +174,12 @@
                     }
                 }
 
+                //set the id of the continue button to the sudoku puzzle id to be usable as an argument for the continuePuzzle() function
+                puzzleId = clone.getElementsByClassName('previous-button');
+                puzzleId[0].Id = element.Id;
+
+
+                //add the new (cloned) table to the page (puzzle-page section)
                 document.getElementById("puzzle-page").appendChild(clone);
                 
             });
@@ -176,7 +189,7 @@
             var firstTable = elements[0];
             firstTable.style.display = 'none';
 
-            if(array.length  < 3) {
+            if(puzzlesArray.length  < 3) {
                 const elements = document.querySelectorAll(".sudoku-table");
                 elements.forEach(function (element) {
                         element.style.margin = '100px auto';
@@ -201,8 +214,31 @@
             });
         }
 
-        function startPuzzle(){
-            window.location.replace("/solving.html");
+        function startNewPuzzle(){
+            //set puzzle in session storage
+            
+            window.location.replace("/ui/solving.html");
+        }
+
+        function previousPuzzle(puzzleId){
+            console.log(`puzzle with id: ${puzzleId} will be continued`);
+
+            solutionString = "";
+            const node = document.getElementsByClassName('sudoku-table');
+            sudokuCells = node[puzzleId].getElementsByClassName('sudoku-cell');
+
+            for (var i = 0; i < startStateString.length; i++) {
+                solutionString += sudokuCells[i].value;
+
+                if(sudokuCells[i].name == 'sudoku-cell-edge') {
+                    solutionString += '\n'
+                }
+                else {
+                    solutionString += ' ';
+                }
+            }
+
+            console.log(`current solution:\n${solutionString}`);
         }
 
         function logout(){
