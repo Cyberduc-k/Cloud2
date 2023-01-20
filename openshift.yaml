@@ -83,7 +83,7 @@ items:
             app: front
         spec:
           containers:
-            - image: ghcr.io/Cyberduc-k/sudokus-front:main
+            - image: ghcr.io/cyberduc-k/sudokus-front:main
               imagePullPolicy: Always
               name: front
               ports:
@@ -133,7 +133,7 @@ items:
                   value: admin
                 - name: MONGODB_USER
                   value: admin
-              image: ghcr.io/Cyberduc-k/sudokus-login:main
+              image: ghcr.io/cyberduc-k/sudokus-login:main
               imagePullPolicy: Always
               name: login
               ports:
@@ -183,7 +183,7 @@ items:
                   value: admin
                 - name: MONGODB_USER
                   value: admin
-              image: ghcr.io/Cyberduc-k/sudokus-highscores:main
+              image: ghcr.io/cyberduc-k/sudokus-highscores:main
               imagePullPolicy: Always
               name: highscores
               ports:
@@ -239,7 +239,7 @@ items:
                   value: bunny
                 - name: RABBITMQ_USER
                   value: bunny
-              image: ghcr.io/Cyberduc-k/sudokus-start:main
+              image: ghcr.io/cyberduc-k/sudokus-start:main
               imagePullPolicy: Always
               name: startsudoku
               ports:
@@ -280,7 +280,7 @@ items:
                   value: bunny
                 - name: RABBITMQ_USER
                   value: bunny
-              image: ghcr.io/Cyberduc-k/sudokus-generate:main
+              image: ghcr.io/cyberduc-k/sudokus-generate:main
               imagePullPolicy: Always
               name: generatesudoku
               ports:
@@ -330,7 +330,7 @@ items:
                   value: admin
                 - name: MONGODB_USER
                   value: admin
-              image: ghcr.io/Cyberduc-k/sudokus-stop:main
+              image: ghcr.io/cyberduc-k/sudokus-stop:main
               imagePullPolicy: Always
               name: stopsudoku
               ports:
@@ -381,7 +381,7 @@ items:
                   value: admin
                 - name: MONGO_INITDB_DATABASE
                   value: SudokuDB
-              image: ghcr.io/Cyberduc-k/sudokus-mongo:main
+              image: ghcr.io/cyberduc-k/sudokus-mongo:main
               imagePullPolicy: Always
               name: mongodb
               ports:
