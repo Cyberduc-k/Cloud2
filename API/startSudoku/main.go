@@ -136,6 +136,7 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	sudokuId := primitive.NewObjectID()
 	bytes, _ := sudokuId.MarshalText()
 
+	log.Printf("sending queue message: %s", bytes)
 	self.channel.Publish(
 		"",
 		"StartPuzzle",
@@ -202,7 +203,9 @@ func setupRabbit() (*amqp.Connection, *amqp.Channel, error) {
 	user := os.Getenv("RABBITMQ_USER")
 	pass := os.Getenv("RABBITMQ_PASSWORD")
 	hostname := os.Getenv("RABBITMQ_CONNECTION")
-	conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:5672", user, pass, hostname))
+	connString := fmt.Sprintf("amqp://%s:%s@%s:5672", user, pass, hostname)
+	log.Println(connString)
+	conn, err := amqp.Dial(connString)
 	if err != nil {
 		return nil, nil, err
 	}
