@@ -39,12 +39,12 @@
             let data = {Username: username, Password: password};
 
             fetch(`/login`, {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'}, 
+                method: "Post",
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             }).then(res => {
                 //set the response user from the login go service in session storage
-                sessionStorage.setItem("User", JSON.stringify(res));
+                sessionStorage.setItem("User", res);
 
                 console.log("Request complete! response:", res);
 
