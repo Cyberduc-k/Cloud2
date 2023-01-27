@@ -70,6 +70,8 @@ func main() {
 
 	router.HandleFunc("/", handler.startSudoku).Methods("POST")
 
+	router.HandleFunc("/puzzles", handler.getStartSudokuResponse).Methods("POST")
+
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)
 	}
@@ -156,6 +158,17 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	}()
 
 	<-forever
+}
+
+func (self *Handler) getStartSudokuResponse(writer http.ResponseWriter, request *http.Request) {
+	sudokuIdString := request.FormValue("SudokuId")
+
+	sudokuId, err := primitive.ObjectIDFromHex(sudokuIdString)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	self.returnSudoku(writer, sudokuId)
 }
 
 func (self *Handler) onSudokuCreated(sudokuId primitive.ObjectID, user model.User) {

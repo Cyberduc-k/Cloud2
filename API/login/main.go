@@ -29,11 +29,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	repo := repository.New[model.User](ctx, client, "SudokuDB", "Users")
-	handler := Handler{repo}
+	userRepo := repository.New[model.User](ctx, client, "SudokuDB", "Users")
+	handler := Handler{userRepo}
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", handler.Login).Methods("Post")
+	router.HandleFunc("/", handler.Login).Methods("POST")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)
@@ -45,6 +45,7 @@ func (self *Handler) Login(writer http.ResponseWriter, request *http.Request) {
 
 	loginInfo.Username = request.FormValue("Username")
 	loginInfo.Password = request.FormValue("Password")
+
 	user, err := self.userRepo.Login(loginInfo)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {

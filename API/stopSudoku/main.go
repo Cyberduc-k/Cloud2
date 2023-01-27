@@ -79,7 +79,7 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 			if err := self.userRepo.Update(user.Id, update); err != nil {
 				log.Fatal(err)
 			}
-			response := ""
+			response := "Success!"
 			writeResponse(writer, http.StatusOK, response)
 
 			//set currentsudokuId for the user back to a nil primitive object ID
