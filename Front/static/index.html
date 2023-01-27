@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
-    <link rel="stylesheet" href="/ui/login.css">
-    <link rel="icon" href="/ui/assets/sudoku.svg" sizes="any" type="image/svg">
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
 </head>
 <body>
     <main>
         <section class="login-window">
             <h1>Cloud 2 Sudoku application Login</h1>
-            <img class="sudoku-image" src="/ui/assets/sudoku_wallpaper.png"/>
+            <img class="sudoku-image" src="assets/sudoku_wallpaper.png"/>
                 <form class="pure-form pure-form-stacked" name="login_form" onsubmit="login(event)">
                     <fieldset>
                         <section class="pure-control-group">
@@ -22,6 +22,9 @@
                         </section>
                         <section class="pure-controls">
                             <button type="submit" class="pure-button pure-button-primary">Login</button>
+                        </section>
+                        <section id="login-error">
+                            <span>A login error occured!</span>
                         </section>
                     </fieldset>
                 </form>
@@ -36,13 +39,23 @@
             var username = document.getElementById("stacked-username").value;
             var password = document.getElementById("stacked-password").value;
 
-            let data = {Username: username, Password: password};
+            let formData = new FormData();
+                formData.append('Username', `${username}`);
+                formData.append('Password', password);
 
-            fetch(`/login`, {
-                method: "Post",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
+            fetch(`https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/login`, {
+                method: "POST",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: formData
             }).then(res => {
+
+                //display error if no response was given
+                if (res == null | res == {}) {
+                    var errorSection = document.getElementById("login-error");
+                    errorSection.style.display = 'inline';
+                    return;
+                }
+
                 //set the response user from the login go service in session storage
                 sessionStorage.setItem("User", res);
 
@@ -52,7 +65,7 @@
                 var user = JSON.parse(sessionStorage.getItem("User"));
             
                 if(user != null || user != {}) {
-                    window.location.replace("/ui/puzzles.html");
+                    window.location.replace("/puzzles.html");
                 }
             });
         }

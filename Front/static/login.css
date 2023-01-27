@@ -38,6 +38,11 @@ h1 {
     width: 57%;
 }
 
+#login-error {
+    display: none;
+    color: #ff0000;
+}
+
 .footer-class {
     background-color: #042058;
 }
