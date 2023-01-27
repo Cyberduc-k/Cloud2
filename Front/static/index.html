@@ -42,29 +42,32 @@
             let formData = new FormData();
                 formData.append('Username', username);
                 formData.append('Password', password);
+                
 
             fetch(`/login`, {
                 method: "POST",
                 body: formData
-            }).then(res => {
+            }).then(async res => {
 
-                //display error if no response was given
-                if (res == null | res == {}) {
+                try {
+                    var result = await res.json();
+
+                    //set the response user from the login go service in session storage
+                    sessionStorage.setItem("User", JSON.stringify(result));
+
+                    console.log("Request complete! response:", result);
+
+                    //check if the user was retrieved and set
+                    var user = JSON.parse(sessionStorage.getItem("User"));
+
+                    if(user != null || user != {}) {
+                        window.location.replace("/puzzles.html");
+                    }
+                }
+                catch(error) {
                     var errorSection = document.getElementById("login-error");
                     errorSection.style.display = 'inline';
                     return;
-                }
-
-                //set the response user from the login go service in session storage
-                sessionStorage.setItem("User", res);
-
-                console.log("Request complete! response:", res);
-
-                //check if the user was retrieved and set
-                var user = JSON.parse(sessionStorage.getItem("User"));
-            
-                if(user != null || user != {}) {
-                    window.location.replace("/puzzles.html");
                 }
             });
         }
