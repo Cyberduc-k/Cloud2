@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Handler struct {
@@ -46,6 +47,10 @@ func (self *Handler) Login(writer http.ResponseWriter, request *http.Request) {
 	loginInfo.Password = request.FormValue("Password")
 	user, err := self.userRepo.Login(loginInfo)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			writeResponse(writer, 404, interface{}(nil))
+			return
+		}
 		log.Fatal(err)
 	}
 
