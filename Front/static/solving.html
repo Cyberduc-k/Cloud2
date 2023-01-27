@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" title="Sudoku Application Cloud Computing 2">
+<html lang="en">
 <head>
     <title>Sudoku Application Cloud Computing 2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
@@ -13,7 +13,7 @@
             <button class="pure-button pure-button-primary" id="quit-button" onclick="quit()">Quit</button>
         </section>
         <section class="puzzles-window">
-            <h1 class="header1-text">Solving a soduku puzzle</h1>
+            <h1 class="header1-text">Solving a sudoku puzzle</h1>
 
             <div id="timer">
                 <label>Time: </label>
@@ -141,6 +141,14 @@
         <label class="footer-team-label">Created By Cloud Computing 2 Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
     </footer>
     <script>
+
+        //prompt the user for confirmation before the page is closed, refreshed or unloaded to prevent unecessary loss of progress on a puzzle
+        window.addEventListener('beforeunload', exit);
+        function exit(e) {
+                    e.preventDefault();
+                    e.returnValue = 'Are you sure you want to restart this puzzle?';
+        };
+
         //JQuery select/focus the input when clicking on an input field (Quality of Life thing)
         $("input[type='text']").on("click", function() {
             $(this).select();
@@ -205,6 +213,13 @@
             console.log(`your current solution:\n${solutionString}`);
 
             User = JSON.parse(sessionStorage.getItem("User"));
+
+            if(User == null || User == {}) {
+                alert(`Unable to detect a logged in user: a puzzle cannot be submitted for completion, please log in and try again`);
+                //window.location.replace("/index.html");
+                return;
+            }
+
             userId = User.Id;
 
             let formData = new FormData();
@@ -283,6 +298,7 @@
 
         function quit(){
             if (confirm('Are you sure you want to quit the current sudoku puzzle?')) {
+                window.removeEventListener('beforeunload', exit);
                 stopTimer();
                 window.location.replace("/puzzles.html");
             }

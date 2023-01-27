@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" title="Sudoku Application Cloud Computing 2">
+<html lang="en">
 <head>
     <title>Sudoku Application Cloud Computing 2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
@@ -39,6 +39,11 @@
             event.preventDefault();
             var username = document.getElementById("stacked-username").value;
             var password = document.getElementById("stacked-password").value;
+
+            if(username == "" || password == "") {
+                alert('Please enter both a username and password');
+                return;
+            }
 
             let formData = new FormData();
                 formData.append('Username', username);
