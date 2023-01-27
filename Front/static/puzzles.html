@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" title="Sudoku Application Cloud Computing 2">
 <head>
+    <title>Sudoku Application Cloud Computing 2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <link rel="stylesheet" href="puzzles.css">
     <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
@@ -120,7 +121,7 @@
                 <button class="pure-button pure-button-primary highscore-button" onclick="viewPuzzleHighscore(this.Id)">Look at this puzzle</button>
             </section>
             <section class="pure-controls" id="start-new-button-section">
-                <button class="pure-button pure-button-primary" id="start-new-puzzle-button" onclick="startNewPuzzle()">Start new puzzle</button>
+                <button class="pure-button pure-button-primary" id="start-new-puzzle-button" onclick="startNewPuzzle()">Start a puzzle</button>
             </section>
         </section>
     </main>
@@ -135,6 +136,11 @@
 
             //fetch puzzle start states from login endpoint that was just created
             var User = JSON.parse(sessionStorage.getItem("User"));
+
+            if (User == null || User == {}) {
+                displayPuzzles(null);
+                return;
+            }
 
             sudokusArray = User.Sudokus;
 
@@ -287,7 +293,8 @@
 
         function logout(){
             if (confirm('Are you sure you want to logout?')) {
-                sessionStorage.removeItem("User");
+                //clear the session and redirect back to the login/index page
+                sessionStorage.clear();
                 window.location.replace("/ui/index.html");
             }
         }

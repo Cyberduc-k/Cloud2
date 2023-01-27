@@ -1,5 +1,5 @@
 #puzzles-main{
-    margin-bottom: 100px;
+    min-height: calc(92vh - 0.2em);
 }
 
 #solving-main {

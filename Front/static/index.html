@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" title="Sudoku Application Cloud Computing 2">
 <head>
+    <title>Sudoku Application Cloud Computing 2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <link rel="stylesheet" href="login.css">
     <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
@@ -42,7 +43,6 @@
             let formData = new FormData();
                 formData.append('Username', username);
                 formData.append('Password', password);
-                
 
             fetch(`/login`, {
                 method: "POST",

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" title="Sudoku Application Cloud Computing 2">
 <head>
+    <title>Sudoku Application Cloud Computing 2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <link rel="stylesheet" href="puzzles.css">
     <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
@@ -140,7 +141,7 @@
         <label class="footer-team-label">Created By Cloud Computing 2 Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
     </footer>
     <script>
-        //JQuery select the input when clicking on an input field
+        //JQuery select/focus the input when clicking on an input field (Quality of Life thing)
         $("input[type='text']").on("click", function() {
             $(this).select();
         });
@@ -156,6 +157,7 @@
         var seconds = 0;
 
         function startPuzzle(){
+            //call to methods to initialize the puzzle and start the timer
             initPuzzle();
             startTimer();
         }
