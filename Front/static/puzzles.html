@@ -151,8 +151,7 @@
                     try {
                         var result = await res.json();
                         
-                        sessionStorage.setItem("UserCompletedPuzzles", JSON.stringify(result));
-                        completedPuzzelsStates.push(result.startState);
+                        completedPuzzelStates.push(result.startState);
                     }
                     catch(error) {
                         console.log(error);
@@ -160,6 +159,8 @@
                     }
                 })
             })
+
+            sessionStorage.setItem("UserCompletedPuzzles", completedPuzzelStates);
 
             displayPuzzles(completedPuzzelStates);
         }
