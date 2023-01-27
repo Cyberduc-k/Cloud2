@@ -160,7 +160,7 @@
                 })
             })
 
-            sessionStorage.setItem("UserCompletedPuzzles", completedPuzzelStates);
+            sessionStorage.setItem("UserCompletedPuzzles", JSON.stringify(completedPuzzelStates));
 
             displayPuzzles(completedPuzzelStates);
         }
