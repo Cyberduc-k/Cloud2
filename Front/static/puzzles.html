@@ -152,10 +152,8 @@
                     try {
                         var result = await res.json();
                         
-                        sessionStorage.setItem("UserCompletedPuzzles", result);
-                        startSudokuResponse = JSON.parse(result);
-                        completedPuzzelsStates.push(startSudokuResponse.StartState);
-
+                        sessionStorage.setItem("UserCompletedPuzzles", JSON.stringify(result));
+                        completedPuzzelsStates.push(result.startState);
                     }
                     catch(error) {
                         console.log(error);
@@ -171,8 +169,8 @@
 
             if(puzzlesArray == null || puzzlesArray == {} || puzzlesArray.length < 2) {
                 puzzlesArray = [{"Id":"1", "StartState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","Solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"},
-                                    {"Id":"2", "StartState":"7 _ 4 _ _ _ 2 _ _\n3 _ _ _ 7 _ _ _ 1\n_ 1 _ _ _ 5 6 _ _\n_ _ _ 4 _ _ _ 8 _\n_ 5 _ _ _ 9 _ _ _\n_ _ 9 _ _ 3 _ 5 _\n2 _ _ _ _ _ _ _ _\n_ _ _ 8 _ _ _ 6 _\n_ _ 8 2 3 7 _ _ _\n","Solution":"7 6 4 9 1 8 2 3 5\n3 8 5 6 7 2 9 4 1\n9 1 2 3 4 5 6 7 8\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n8 7 9 1 2 3 4 5 6\n2 3 1 5 6 4 8 9 7\n5 4 7 8 9 1 3 6 2\n6 9 8 2 3 7 5 1 4"},
-                                    {"Id":"3", "StartState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","Solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}];
+                                {"Id":"2", "StartState":"7 _ 4 _ _ _ 2 _ _\n3 _ _ _ 7 _ _ _ 1\n_ 1 _ _ _ 5 6 _ _\n_ _ _ 4 _ _ _ 8 _\n_ 5 _ _ _ 9 _ _ _\n_ _ 9 _ _ 3 _ 5 _\n2 _ _ _ _ _ _ _ _\n_ _ _ 8 _ _ _ 6 _\n_ _ 8 2 3 7 _ _ _\n","Solution":"7 6 4 9 1 8 2 3 5\n3 8 5 6 7 2 9 4 1\n9 1 2 3 4 5 6 7 8\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n8 7 9 1 2 3 4 5 6\n2 3 1 5 6 4 8 9 7\n5 4 7 8 9 1 3 6 2\n6 9 8 2 3 7 5 1 4"},
+                                {"Id":"3", "StartState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","Solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}];
             }
 
             canDisplayNewButton = true;
@@ -262,14 +260,11 @@
                     console.log("start sudoku request complete! response:", result);
 
                     //set the sudoku puzzle id and it's start state in the session
-                    sessionStorage.setItem("SudokuId", result.Id);
-                    sessionStorage.setItem("PuzzleStartState", result.StartState);
+                    sessionStorage.setItem("SudokuId", result.id);
+                    sessionStorage.setItem("PuzzleStartState", result.startState);
 
-                    var sudoku = JSON.parse(sessionStorage.getItem("SudokuId"));
-                    var startState = JSON.parse(sessionStorage.getItem("PuzzleStartState"));
-
-                    //check if the sudokuId and startState have been set in session storage
-                    if(sudoku != null  && startState != null || sudoku != {} && startState != {}) {
+                    //check if the sudokuId and startState aren't null or empty strings
+                    if(result.id != null  && result.startState != null || result.id != "" && result.startState != {}) {
                         window.location.replace("/solving.html");
                     }
                 }
