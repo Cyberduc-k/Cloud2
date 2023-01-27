@@ -128,14 +128,11 @@
                 <button class="pure-button pure-button-primary" id="finish-button" onclick="finishPuzzle()">Finish this puzzle</button>
             </section>
 
-
             <!--<div id="controls">
                 <button id="start" onclick="startTimer()">Start</button>
                 <button id="stop" onclick="stopTimer()">Stop</button>
                 <button id="reset" onclick="resetTimer()">Reset</button>
             </div>-->
-
-            <!-- TODO: add the session and api fetch functionalities-->
 
         </section>
     </main>
@@ -165,9 +162,12 @@
 
         function initPuzzle(){
             //startStateString = element.StartState;
-            var puzzleJSON = {"StartState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","Solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"};
+            //var puzzleJSON = {"startState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"};
 
-            startStateString = puzzleJSON.StartState;
+            startStateString = sessionStorage.getItem("PuzzleStartState");
+
+            //startStateString = puzzleJSON.StartState;
+
             //remove new lines and spaces from the string
             startStateString = startStateString.replace(/\r?\n|\r|\s/g, "");
 
@@ -202,37 +202,36 @@
                     solutionString += ' ';
                 }
             }
+
             console.log(`your current solution:\n${solutionString}`);
 
-            /*var puzzleJSON = {"StartState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","Solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"};
+            User = JSON.parse(sessionStorage.getItem("User"));
+            userId = User.Id;
 
-
-            if(solutionString == puzzleJSON.Solution) {
-                console.log("success");
-            } else {
-                console.log("failure, please try again");
-            }*/
-            //I should have a complete solutionString right here to send with the request as the proposed solution.
-
-
-            //currentSudokuId should already be set here for the user so there should be no need to send the sodukuId as well here right?
-            let data = { Solution: solutionString };
-
-            //fetch/call to the stop sudoku puzzle microservice with the solution
+            let formData = new FormData();
+                formData.append('Solution', solutionString);
 
             fetch(`/sudokus/stop`, {
                 method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            }).then(res => {
-
-                if(JSON.parse(res.data) == "Success!") {
-
-                    stopTimer();
-                    alert(`Congratulations! You've successfully completed a puzzle!`);
-                    if(confirm('Would you like to return to the puzzles page?')) {
-                        window.location.replace("/puzzles.html");
+                headers: {'Authorization': `${userId}`},
+                body: formData
+            }).then(async res => {
+                try {
+                    var result = await res.text();
+                    if(result == "Success!") {
+                        stopTimer();
+                        alert(`Congratulations! You've successfully completed a puzzle!`);
+                        if(confirm('Would you like to return to the puzzles page?')) {
+                            window.location.replace("/puzzles.html");
+                        } else {
+                            alert("too bad so sad, you're going back anyway");
+                            window.location.replace("/puzzles.html");
+                        }
                     }
+                }
+                catch(error) {
+                    console.log(error);
+                    return;
                 }
             });
         }
