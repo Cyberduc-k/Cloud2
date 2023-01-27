@@ -141,11 +141,12 @@
 
                 let data = {SudokuId: sodoku.SudokuId};
 
-                fetch(`/login/puzzles`, {
+                fetch(`/startSudoku/puzzles`, {
                     method: "Post",
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data),
                 }).then(res => {
+                    sessionStorage.setItem("UserCompletedPuzzles", res);
                     startSudokuResponse = JSON.parse(res);
                     completedPuzzelsStates.push(startSudokuResponse.StartState);
                 })

@@ -11,12 +11,10 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Handler struct {
-	userRepo   repository.Repository[model.User]
-	sudokuRepo repository.Repository[model.Sudoku]
+	userRepo repository.Repository[model.User]
 }
 
 func main() {
@@ -31,13 +29,10 @@ func main() {
 	}
 
 	userRepo := repository.New[model.User](ctx, client, "SudokuDB", "Users")
-	sudokuRepo := repository.New[model.Sudoku](ctx, client, "SudokuDB", "Sudokus")
-	handler := Handler{userRepo, sudokuRepo}
+	handler := Handler{userRepo}
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", handler.Login).Methods("Post")
-
-	router.HandleFunc("/puzzles", handler.getStartSudokuResponse).Methods("Post")
+	router.HandleFunc("/", handler.Login).Methods("POST")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)
@@ -49,6 +44,7 @@ func (self *Handler) Login(writer http.ResponseWriter, request *http.Request) {
 
 	loginInfo.Username = request.FormValue("Username")
 	loginInfo.Password = request.FormValue("Password")
+
 	user, err := self.userRepo.Login(loginInfo)
 	if err != nil {
 		log.Fatal(err)
@@ -61,23 +57,6 @@ func (self *Handler) Login(writer http.ResponseWriter, request *http.Request) {
 	loginResponse.Id = user.Id
 
 	writeResponse(writer, http.StatusOK, loginResponse)
-}
-
-func (self *Handler) getStartSudokuResponse(writer http.ResponseWriter, request *http.Request) {
-	sudokuIdString := request.FormValue("SudokuId")
-
-	sudokuId, err := primitive.ObjectIDFromHex(sudokuIdString)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	sudoku, err := self.sudokuRepo.GetById(sudokuId)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	response := model.StartSudokuResponse{Id: sudokuId, StartState: sudoku.StartState}
-	writeResponse(writer, http.StatusOK, response)
 }
 
 func writeResponse[T any](w http.ResponseWriter, code int, data T) {
