@@ -6,7 +6,7 @@
     <link rel="icon" href="assets/sudoku.svg" sizes="any" type="image/svg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
-<body onload="displayPuzzles()">
+<body onload="retrievePuzzles()">
     <main id="puzzles-main">
         <section class="pure-controls" id="quit-button-section">
             <button class="button-warning pure-button" id="logout-button" onclick="logout()">Logout</button>
@@ -137,18 +137,30 @@
 
             sudokusArray = User.Sudokus;
 
-            sudokusArray.forEach(sodoku => {
+            sudokusArray.forEach(sudoku => {
 
-                let data = {SudokuId: sodoku.SudokuId};
+                let formData = new FormData();
+                formData.append('SudokuId', sudoku.SudokuId);
 
-                fetch(`/startSudoku/puzzles`, {
+                //let data = {SudokuId: sodoku.SudokuId};
+
+                fetch(`/sudokus/start/puzzles`, {
                     method: "Post",
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data),
-                }).then(res => {
-                    sessionStorage.setItem("UserCompletedPuzzles", res);
-                    startSudokuResponse = JSON.parse(res);
-                    completedPuzzelsStates.push(startSudokuResponse.StartState);
+                    body: formData,
+                }).then(async res => {
+
+                    try {
+                        var result = await res.json();
+                        
+                        sessionStorage.setItem("UserCompletedPuzzles", result);
+                        startSudokuResponse = JSON.parse(result);
+                        completedPuzzelsStates.push(startSudokuResponse.StartState);
+
+                    }
+                    catch(error) {
+                        console.log(error);
+                        return;
+                    }
                 })
             })
 
@@ -157,14 +169,11 @@
 
         function displayPuzzles(puzzlesArray){
 
-            /*var User = sessionStorage.getItem("User");
-
-           var actualPuzzlesArray = User.Puzzles;*/
-
-            //now pretend that this is already the puzzles array part of the User object in session storage (only small adjustments to properly read this necessary)
-            var puzzlesArray = [{"Id":"1", "StartState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","Solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"},
-                                {"Id":"2", "StartState":"7 _ 4 _ _ _ 2 _ _\n3 _ _ _ 7 _ _ _ 1\n_ 1 _ _ _ 5 6 _ _\n_ _ _ 4 _ _ _ 8 _\n_ 5 _ _ _ 9 _ _ _\n_ _ 9 _ _ 3 _ 5 _\n2 _ _ _ _ _ _ _ _\n_ _ _ 8 _ _ _ 6 _\n_ _ 8 2 3 7 _ _ _\n","Solution":"7 6 4 9 1 8 2 3 5\n3 8 5 6 7 2 9 4 1\n9 1 2 3 4 5 6 7 8\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n8 7 9 1 2 3 4 5 6\n2 3 1 5 6 4 8 9 7\n5 4 7 8 9 1 3 6 2\n6 9 8 2 3 7 5 1 4"},
-                                {"Id":"3", "StartState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","Solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}];
+            if(puzzlesArray == null || puzzlesArray == {} || puzzlesArray.length < 2) {
+                puzzlesArray = [{"Id":"1", "StartState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","Solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"},
+                                    {"Id":"2", "StartState":"7 _ 4 _ _ _ 2 _ _\n3 _ _ _ 7 _ _ _ 1\n_ 1 _ _ _ 5 6 _ _\n_ _ _ 4 _ _ _ 8 _\n_ 5 _ _ _ 9 _ _ _\n_ _ 9 _ _ 3 _ 5 _\n2 _ _ _ _ _ _ _ _\n_ _ _ 8 _ _ _ 6 _\n_ _ 8 2 3 7 _ _ _\n","Solution":"7 6 4 9 1 8 2 3 5\n3 8 5 6 7 2 9 4 1\n9 1 2 3 4 5 6 7 8\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n8 7 9 1 2 3 4 5 6\n2 3 1 5 6 4 8 9 7\n5 4 7 8 9 1 3 6 2\n6 9 8 2 3 7 5 1 4"},
+                                    {"Id":"3", "StartState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","Solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}];
+            }
 
             canDisplayNewButton = true;
 
@@ -179,8 +188,6 @@
 
                 startStateString = element.StartState;
                 //solutionString = element.Solution;
-
-                //console.log(`first string:\n${startStateString}`);
 
                 //remove new lines and spaces from the string
                 startStateString = startStateString.replace(/\r?\n|\r|\s/g, "");
@@ -202,7 +209,6 @@
                 //set the id of the continue button to the sudoku puzzle id to be usable as an argument for the continuePuzzle() function
                 puzzleId = clone.getElementsByClassName('highscore-button');
                 puzzleId[0].Id = element.Id;
-
 
                 //add the new (cloned) table to the page (puzzle-page section)
                 document.getElementById("puzzle-page").appendChild(clone);
@@ -240,34 +246,42 @@
         }
 
         function startNewPuzzle(){
+
             //fetch to the startSudoku golang microservice
             User = JSON.parse(sessionStorage.getItem("User"));
             userId = User.Id;
 
-            fetch(`/startSudoku`, {
+            fetch(`/sudokus/start`, {
                 method: "POST",
-                headers: {'Content-Type': 'application/json', 'Authorization': `${userId}`},
+                headers: {'Authorization': `${userId}`},
                 body: null
-            }).then(res => {
-                console.log("start sudoku request complete! response:", res);
+            }).then(async res => {
+                try {
+                    var result = await res.json();
 
-                //set the sudoku puzzle id and it's start state in the session
-                sessionStorage.setItem("SudokuId", res.Id);
-                sessionStorage.setItem("PuzzleStartState", res.StartState);
+                    console.log("start sudoku request complete! response:", result);
 
-                var sudoku = JSON.parse(sessionStorage.getItem("SudokuId"));
-                var startState = JSON.parse(sessionStorage.getItem("PuzzleStartState"));
+                    //set the sudoku puzzle id and it's start state in the session
+                    sessionStorage.setItem("SudokuId", result.Id);
+                    sessionStorage.setItem("PuzzleStartState", result.StartState);
 
-                //check if the sudokuId and startState have been set in session storage
-                if(sudoku != null  && startState != null || sudoku != {} && startState != {}) {
-                    window.location.replace("/solving.html");
+                    var sudoku = JSON.parse(sessionStorage.getItem("SudokuId"));
+                    var startState = JSON.parse(sessionStorage.getItem("PuzzleStartState"));
+
+                    //check if the sudokuId and startState have been set in session storage
+                    if(sudoku != null  && startState != null || sudoku != {} && startState != {}) {
+                        window.location.replace("/solving.html");
+                    }
+                }
+                catch(error) {
+                    console.log(error);
+                    return;
                 }
             });
-            //window.location.replace("/ui/solving.html");
         }
 
         function viewPuzzleHighscore(puzzleId){
-            //console.log(`looking at puzzle with id: ${puzzleId}`);
+            console.log(`looking at puzzle with id: ${puzzleId}`);
 
             solutionString = "";
             const node = document.getElementsByClassName('sudoku-table');

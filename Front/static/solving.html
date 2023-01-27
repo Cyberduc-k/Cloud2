@@ -220,7 +220,7 @@
 
             //fetch/call to the stop sudoku puzzle microservice with the solution
 
-            fetch(`/stopSudoku`, {
+            fetch(`/sudokus/stop`, {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
@@ -234,7 +234,6 @@
                         window.location.replace("/puzzles.html");
                     }
                 }
-
             });
         }
 
