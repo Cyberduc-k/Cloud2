@@ -108,7 +108,7 @@ input:hover {
 }
 
 #start-new-puzzle-button {
-    display: none;
+    display: inline;
 }
 
 #timer {

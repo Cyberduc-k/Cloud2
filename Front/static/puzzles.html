@@ -138,6 +138,7 @@
 
             sudokusArray = User.Sudokus;
 
+            //retrieve the startState for every puzzle the user has completed
             sudokusArray.forEach(sudoku => {
 
                 let formData = new FormData();
@@ -173,16 +174,10 @@
                                 {"id":"3", "startState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}];
             }
 
-            canDisplayNewButton = true;
-
+            //clone and display a new sudoku puzzle table for every completed sudoku puzzle in the retrieved/given puzzles array
             puzzlesArray.forEach(element => {
                 const node = document.getElementById("sudoku-section");
                 const clone = node.cloneNode(true);
-
-                //check if the new puzzle button can be displayed
-                if(element.completed == false) {
-                    canDisplayNewButton = false;
-                }
 
                 startStateString = element.startState;
 
@@ -216,17 +211,13 @@
             var firstTable = elements[0];
             firstTable.style.display = 'none';
 
+            //change the page style when less than three puzzles are displayed on the page
             if(puzzlesArray.length  < 3) {
                 const elements = document.querySelectorAll(".sudoku-table");
                 elements.forEach(function (element) {
                         element.style.margin = '100px auto';
                         element.style.display = 'table';
                 });
-            }
-            
-            if(canDisplayNewButton) {
-                var newPuzzleButton = document.getElementById("start-new-puzzle-button");
-                newPuzzleButton.style.display = 'inline';
             }
 
             //JQuery select input when clicking on an input field in the new tables
