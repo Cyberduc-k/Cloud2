@@ -131,8 +131,9 @@
 
         function retrievePuzzles(){
 
-            var completedPuzzelStates;
-            //fetch puzzle start states from login endpoint I just created
+            var completedPuzzelStates = [];
+
+            //fetch puzzle start states from login endpoint that was just created
             var User = JSON.parse(sessionStorage.getItem("User"));
 
             sudokusArray = User.Sudokus;
@@ -141,8 +142,6 @@
 
                 let formData = new FormData();
                 formData.append('SudokuId', sudoku.SudokuId);
-
-                //let data = {SudokuId: sodoku.SudokuId};
 
                 fetch(`/sudokus/start/puzzles`, {
                     method: "Post",
