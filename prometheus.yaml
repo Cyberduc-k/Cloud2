@@ -12,17 +12,21 @@ global:
 # well as HA API server deployments.
 scrape_configs:
 - job_name: 'login'
+  metrics_path: '/login/metrics'
   static_configs:
-    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/login']
+    - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
 - job_name: 'highscores'
+  metrics_path: '/highscores/metrics'
   static_configs:
-    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/highscores']
+    - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
 - job_name: 'startsudoku'
+  metrics_path: '/sudokus/start/metrics'
   static_configs:
-    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/sudokus/start']
+    - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
 - job_name: 'stopsudoku'
+  metrics_path: '/sudokus/stop/metrics'
   static_configs:
-    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/sudokus/stop']
+    - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
   
 - job_name: 'kubernetes-apiservers'
 
