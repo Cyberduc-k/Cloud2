@@ -151,8 +151,8 @@ items:
                 - containerPort: 9090
               resources: {}
               volumeMounts:
-                - mountPath: /data/db
-                  name: mongodb-claim0
+                - mountPath: /prometheus
+                  name: prometheus
           restartPolicy: Always
           volumes:
             - name: prometheus
