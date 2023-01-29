@@ -1,0 +1,26 @@
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'login'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['login:8081']
+
+  - job_name: openshift
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - openshift-*
+            - default
+            - fluix-dev
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: openshift-.*;kube-apiserver;https

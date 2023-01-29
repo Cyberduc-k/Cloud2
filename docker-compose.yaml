@@ -24,6 +24,16 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: '${RABBITMQ_USER:-admin}'
       RABBITMQ_DEFAULT_PASS: '${RABBITMQ_PASSWORD:-admin}'
+  prometheus:
+    image: sudokus/prometheus
+    build:
+      context: .
+      dockerfile: docker/prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    links:
+      - login
   front:
     image: sudokus/front
     build:

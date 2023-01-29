@@ -12,7 +12,8 @@ items:
         haproxy.router.openshift.io/rewrite-target: /
       name: front
     spec:
-      path: /ui
+      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+      path: /
       to:
         kind: Service
         name: front
@@ -29,6 +30,7 @@ items:
         haproxy.router.openshift.io/rewrite-target: /
       name: login
     spec:
+      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
       path: /login
       to:
         kind: Service
@@ -46,6 +48,7 @@ items:
         haproxy.router.openshift.io/rewrite-target: /
       name: highscores
     spec:
+      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
       path: /highscores
       to:
         kind: Service
@@ -63,6 +66,7 @@ items:
         haproxy.router.openshift.io/rewrite-target: /
       name: startsudoku
     spec:
+      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
       path: /sudokus/start
       to:
         kind: Service
@@ -80,6 +84,7 @@ items:
         haproxy.router.openshift.io/rewrite-target: /
       name: stopsudoku
     spec:
+      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
       path: /sudokus/stop
       to:
         kind: Service
@@ -88,6 +93,65 @@ items:
         targetPort: "8084"
       tls:
         termination: edge
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      labels:
+        app: prometheus
+      annotations:
+        haproxy.router.openshift.io/rewrite-target: /
+      name: prometheus
+    spec:
+      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+      path: /prometheus
+      to:
+        kind: Service
+        name: prometheus
+      port:
+        targetPort: "9090"
+      tls:
+        termination: edge
+
+  # PROMETHEUS
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: prometheus
+      name: prometheus
+    spec:
+      ports:
+        - name: "9090"
+          port: 9090
+          targetPort: 9090
+      status:
+        loadBalancer: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: prometheus
+      name: prometheus
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: prometheus
+      strategy: {}
+      template:
+        metadata:
+          labels:
+            app: front
+        spec:
+          containers:
+            - image: ghcr.io/cyberduc-k/sudokus-prometheus:main
+              imagePullPolicy: Always
+              name: prometheus
+              ports:
+                - containerPort: 9090
+              resources: {}
+          restartPolicy: Always
+    status: {}
 
   # FRONT
   - apiVersion: v1
