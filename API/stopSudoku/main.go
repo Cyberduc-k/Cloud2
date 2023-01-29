@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -37,6 +38,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", handler.stopSudoku).Methods("POST")
+	router.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)
