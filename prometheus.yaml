@@ -11,6 +11,19 @@ global:
 # default named port `https`. This works for single API server deployments as
 # well as HA API server deployments.
 scrape_configs:
+- job_name: 'login'
+  static_configs:
+    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/login']
+- job_name: 'highscores'
+  static_configs:
+    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/highscores']
+- job_name: 'startsudoku'
+  static_configs:
+    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/sudokus/start']
+- job_name: 'stopsudoku'
+  static_configs:
+    - targets: ['https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/sudokus/stop']
+  
 - job_name: 'kubernetes-apiservers'
 
   kubernetes_sd_configs:
