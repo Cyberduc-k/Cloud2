@@ -13,18 +13,22 @@ global:
 scrape_configs:
 - job_name: 'login'
   metrics_path: '/login/metrics'
+  scheme: https
   static_configs:
     - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
 - job_name: 'highscores'
   metrics_path: '/highscores/metrics'
+  scheme: https
   static_configs:
     - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
 - job_name: 'startsudoku'
   metrics_path: '/sudokus/start/metrics'
+  scheme: https
   static_configs:
     - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
 - job_name: 'stopsudoku'
   metrics_path: '/sudokus/stop/metrics'
+  scheme: https
   static_configs:
     - targets: ['sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com']
   
