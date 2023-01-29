@@ -98,12 +98,10 @@ items:
     metadata:
       labels:
         app: prometheus
-      annotations:
-        haproxy.router.openshift.io/rewrite-target: /
       name: prometheus
     spec:
-      host: sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
-      path: /prometheus
+      host: prometheus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+      path: /
       to:
         kind: Service
         name: prometheus
@@ -124,8 +122,10 @@ items:
         - name: "9090"
           port: 9090
           targetPort: 9090
-      status:
-        loadBalancer: {}
+      selector:
+        app: prometheus
+    status:
+      loadBalancer: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -141,7 +141,7 @@ items:
       template:
         metadata:
           labels:
-            app: front
+            app: prometheus
         spec:
           containers:
             - image: ghcr.io/cyberduc-k/sudokus-prometheus:main
@@ -150,7 +150,27 @@ items:
               ports:
                 - containerPort: 9090
               resources: {}
+              volumeMounts:
+                - mountPath: /data/db
+                  name: mongodb-claim0
           restartPolicy: Always
+          volumes:
+            - name: prometheus
+              persistentVolumeClaim:
+                claimName: prometheus
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        app: prometheus
+      name: prometheus
+    spec:
+      accessModes:
+        - ReadWrite
+      resources:
+        requests:
+          storage: 100Mi
     status: {}
 
   # FRONT
