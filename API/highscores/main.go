@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Handler struct {
@@ -34,6 +35,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", handler.getHighscores).Methods("GET")
+	router.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
 		log.Fatal(err)

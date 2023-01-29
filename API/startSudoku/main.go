@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -69,7 +70,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", handler.startSudoku).Methods("POST")
-
+	router.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
 	router.HandleFunc("/puzzles", handler.getStartSudokuResponse).Methods("POST")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
