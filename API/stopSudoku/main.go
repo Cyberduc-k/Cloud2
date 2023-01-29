@@ -55,14 +55,18 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 	log.Println(userId)
 	user, err := self.userRepo.GetById(userId)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		writer.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	log.Println(user)
 	userSolution := request.FormValue("Solution")
 	sudoku, err := self.sudokuRepo.GetById(user.CurrentSudokuId)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		writer.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	//check if the puzzle is incorrect (if so, then return)

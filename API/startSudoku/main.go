@@ -88,7 +88,9 @@ func (self *Handler) startSudoku(writer http.ResponseWriter, request *http.Reque
 	log.Println(userId)
 	user, err := self.userRepo.GetById(userId)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		writer.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	log.Println(user)
@@ -166,7 +168,9 @@ func (self *Handler) getStartSudokuResponse(writer http.ResponseWriter, request 
 
 	sudokuId, err := primitive.ObjectIDFromHex(sudokuIdString)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		writer.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	self.returnSudoku(writer, sudokuId)
@@ -191,7 +195,9 @@ func (self *Handler) onSudokuCreated(sudokuId primitive.ObjectID, user model.Use
 func (self *Handler) returnSudoku(writer http.ResponseWriter, sudokuId primitive.ObjectID) {
 	sudoku, err := self.sudokuRepo.GetById(sudokuId)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		writer.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	response := model.StartSudokuResponse{Id: sudokuId, StartState: sudoku.StartState}
