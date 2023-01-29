@@ -167,7 +167,7 @@ items:
       name: prometheus
     spec:
       accessModes:
-        - ReadWrite
+        - ReadWriteOnce
       resources:
         requests:
           storage: 100Mi
