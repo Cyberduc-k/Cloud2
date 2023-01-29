@@ -27,7 +27,7 @@ func main() {
 	client, err := repository.NewClient(ctx, fmt.Sprintf("mongodb://%s:%s@%s:27017", user, pass, conn))
 
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
 	}
 
 	repo := repository.New[model.User](ctx, client, "SudokuDB", "Users")
@@ -47,7 +47,9 @@ func (self *Handler) getHighscores(writer http.ResponseWriter, request *http.Req
 	users, err := self.userRepo.GetAll()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		writer.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	var score time.Duration
