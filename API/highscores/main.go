@@ -36,7 +36,8 @@ func main() {
 	router.HandleFunc("/", handler.getHighscores).Methods("GET")
 
 	if err := http.ListenAndServe(":8081", router); err != nil {
-		log.Fatal(err)
+		log.Printf("error: %v", err)
+		return
 	}
 }
 
@@ -64,6 +65,6 @@ func writeResponse[T any](w http.ResponseWriter, code int, data T) {
 	w.WriteHeader(code)
 	err := json.NewEncoder(w).Encode(data)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("eror: %v", err)
 	}
 }
