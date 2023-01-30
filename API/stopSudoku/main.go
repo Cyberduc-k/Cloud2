@@ -72,6 +72,8 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 		return
 	}
 
+	log.Println(sudoku.Solution)
+	log.Println(userSolution == sudoku.Solution)
 	//check if the puzzle is incorrect (if so, then return)
 	if userSolution != sudoku.Solution {
 		response := "Incorrect sudoku solution, please try again"
