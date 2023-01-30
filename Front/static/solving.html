@@ -210,7 +210,7 @@
                 }
             }
 
-            console.log(`your current solution:\n${solutionString}`);
+            //console.log(`your current solution:\n${solutionString}`);
 
             User = JSON.parse(sessionStorage.getItem("User"));
 
@@ -241,6 +241,10 @@
                             alert("too bad so sad, you're going back anyway");
                             window.location.replace("/puzzles.html");
                         }
+                    }
+                    else {
+                        //alert('This is not the correct solution to the puzzle, please try again');
+                        alert(`${result}`);
                     }
                 }
                 catch(error) {
