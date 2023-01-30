@@ -163,12 +163,6 @@
                     }
             }
 
-            //retrieve the startState for every puzzle the user has completed
-            sudokusArray.forEach(sudoku => {
-
-
-            })
-
             sessionStorage.setItem("UserCompletedPuzzles", JSON.stringify(completedPuzzelStates));
 
             displayPuzzles(completedPuzzelStates);
