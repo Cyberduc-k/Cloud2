@@ -24,5 +24,5 @@ func (self *SolvedSudoku) IsSolved() bool {
 
 func (self *SolvedSudoku) Solve() {
 	self.DateSolved = time.Now()
-	self.TimeToSolve = self.DateStarted.Sub(self.DateSolved)
+	self.TimeToSolve = self.DateSolved.Sub(self.DateStarted)
 }

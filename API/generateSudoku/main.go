@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/bsontype"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	/*"go.mongodb.org/mongo-driver/mongo/options"*/)
+)
 
 type Handler struct {
 	sudokuRepo repository.Repository[model.Sudoku]
