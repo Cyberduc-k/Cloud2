@@ -129,8 +129,7 @@
         <label class="footer-team-label">Created By Cloud Computing 2 Team 3 (Elias, Fabio, Sander & Tymo) &copy; 2023 Inholland Hogeschool</label>
     </footer>
     <script>
-
-        function retrievePuzzles(){
+        async function retrievePuzzles(){
 
             var completedPuzzelStates = [];
 
@@ -144,18 +143,16 @@
 
             sudokusArray = User.Sudokus;
 
-            //retrieve the startState for every puzzle the user has completed
-            sudokusArray.forEach(sudoku => {
-
+            for (const sudoku of sudokusArray) {
                 let formData = new FormData();
                 formData.append('SudokuId', sudoku.SudokuId);
 
-                fetch(`/sudokus/start/puzzles`, {
+
+                let res = await fetch(`/sudokus/start/puzzles`, {
                     method: "Post",
                     body: formData,
-                }).then(async res => {
-
-                    try {
+                });
+                try {
                         var result = await res.json();
                         
                         completedPuzzelStates.push(result.startState);
@@ -164,7 +161,12 @@
                         console.log(error);
                         return;
                     }
-                })
+            }
+
+            //retrieve the startState for every puzzle the user has completed
+            sudokusArray.forEach(sudoku => {
+
+
             })
 
             sessionStorage.setItem("UserCompletedPuzzles", JSON.stringify(completedPuzzelStates));
@@ -175,9 +177,11 @@
         function displayPuzzles(puzzlesArray){
 
             if(puzzlesArray == null || puzzlesArray == {}) {
-                puzzlesArray = [{"id":"1", "startState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"},
-                                {"id":"2", "startState":"7 _ 4 _ _ _ 2 _ _\n3 _ _ _ 7 _ _ _ 1\n_ 1 _ _ _ 5 6 _ _\n_ _ _ 4 _ _ _ 8 _\n_ 5 _ _ _ 9 _ _ _\n_ _ 9 _ _ 3 _ 5 _\n2 _ _ _ _ _ _ _ _\n_ _ _ 8 _ _ _ 6 _\n_ _ 8 2 3 7 _ _ _\n","solution":"7 6 4 9 1 8 2 3 5\n3 8 5 6 7 2 9 4 1\n9 1 2 3 4 5 6 7 8\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n8 7 9 1 2 3 4 5 6\n2 3 1 5 6 4 8 9 7\n5 4 7 8 9 1 3 6 2\n6 9 8 2 3 7 5 1 4"},
-                                {"id":"3", "startState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}];
+                puzzlesArray = [
+                    {"id":"1", "startState":"_ _ _ 9 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ 8 9 1 _ _ _ 5 _\n2 _ _ _ 6 5 _ _ _\n_ _ _ _ 8 _ 2 _ 4\n_ 9 _ _ _ _ _ _ _\n4 _ _ 5 _ _ _ 7 8\n_ 6 _ _ 3 _ _ 4 _\n9 _ _ _ _ 1 _ _ 2\n","solution":"6 4 5 9 7 8 1 2 3\n1 2 3 4 5 6 7 8 9\n7 8 9 1 2 3 4 5 6\n2 1 4 3 6 5 8 9 7\n3 5 6 7 8 9 2 1 4\n8 9 7 2 1 4 3 6 5\n4 3 1 5 9 2 6 7 8\n5 6 2 8 3 7 9 4 1\n9 7 8 6 4 1 5 3 2\n"},
+                    {"id":"2", "startState":"7 _ 4 _ _ _ 2 _ _\n3 _ _ _ 7 _ _ _ 1\n_ 1 _ _ _ 5 6 _ _\n_ _ _ 4 _ _ _ 8 _\n_ 5 _ _ _ 9 _ _ _\n_ _ 9 _ _ 3 _ 5 _\n2 _ _ _ _ _ _ _ _\n_ _ _ 8 _ _ _ 6 _\n_ _ 8 2 3 7 _ _ _\n","solution":"7 6 4 9 1 8 2 3 5\n3 8 5 6 7 2 9 4 1\n9 1 2 3 4 5 6 7 8\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n8 7 9 1 2 3 4 5 6\n2 3 1 5 6 4 8 9 7\n5 4 7 8 9 1 3 6 2\n6 9 8 2 3 7 5 1 4"},
+                    {"id":"3", "startState":"6 _ 2 _ _ 4 _ _ _\n_ 4 _ _ _ 8 3 7 _\n_ _ _ 1 _ _ _ _ _\n_ _ _ _ _ 6 7 _ _\n_ _ _ 7 8 _ _ 2 3\n7 _ 9 2 _ 1 5 _ _\n_ 1 _ 3 6 _ _ 9 _\n_ _ _ _ _ _ _ _ 5\n9 _ _ _ _ 2 _ _ _","solution":"6 3 2 5 7 4 9 1 8\n5 4 1 6 9 8 3 7 2\n8 9 7 1 2 3 4 5 6\n1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 2 3 1 5 6 4\n2 1 4 3 6 5 8 9 7\n3 6 8 9 1 7 2 4 5\n9 7 5 8 4 2 6 3 1\n"}
+                ];
             }
 
             //clone and display a new sudoku puzzle table for every completed sudoku puzzle in the retrieved/given puzzles array
