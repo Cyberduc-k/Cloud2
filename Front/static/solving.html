@@ -232,7 +232,7 @@
             }).then(async res => {
                 try {
                     var result = await res.text();
-                    if(result == "Success!") {
+                    if(result == `"Success!"`) {
                         stopTimer();
                         alert(`Congratulations! You've successfully completed a puzzle!`);
                         if(confirm('Would you like to return to the puzzles page?')) {
