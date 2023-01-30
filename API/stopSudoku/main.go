@@ -105,6 +105,8 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 			return
 		}
 	}
+
+	writeResponse(writer, http.StatusBadRequest, interface{}(nil))
 }
 
 func setupMongo(ctx context.Context) (*mongo.Client, error) {
