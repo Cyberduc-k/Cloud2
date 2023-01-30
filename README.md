@@ -1,5 +1,11 @@
 # Sudokus
 
+## Links
+- [App](https://sudokus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/)
+  - Username: John
+  - Password: 1234
+- [Prometheus](https://prometheus-fluix-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/graph)
+
 ## Setup
 This app can be run in two ways:
 1. Docker compose: run docker-compose, every microservice will be available on a different port. login: 8081, highscores: 8082, start: 8083, stop: 8084.
