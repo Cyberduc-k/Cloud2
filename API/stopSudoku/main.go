@@ -63,8 +63,6 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 
 	log.Println(user)
 	userSolution := request.FormValue("Solution")
-	log.Println(userSolution)
-	userSolution = strings.ReplaceAll(userSolution, "\\n", "\n")
 	sudoku, err := self.sudokuRepo.GetById(user.CurrentSudokuId)
 	if err != nil {
 		log.Printf("error: %v", err)
@@ -72,10 +70,14 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 		return
 	}
 
-	log.Println(sudoku.Solution)
-	log.Println(userSolution == sudoku.Solution)
+	a := strings.TrimSpace(strings.ReplaceAll(userSolution, " ", ""))
+	a = strings.ReplaceAll(a, "\r\n", "\n")
+	b := strings.TrimSpace(strings.ReplaceAll(sudoku.Solution, " ", ""))
+	log.Println(a)
+	log.Println(b)
+	log.Println(a == b)
 	//check if the puzzle is incorrect (if so, then return)
-	if strings.TrimSpace(userSolution) != strings.TrimSpace(sudoku.Solution) {
+	if a != b {
 		response := "Incorrect sudoku solution, please try again"
 		writeResponse(writer, http.StatusOK, response)
 		return
