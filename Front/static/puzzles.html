@@ -118,7 +118,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="pure-button pure-button-primary highscore-button" onclick="viewPuzzleHighscore(this.Id)">Look at this puzzle</button>
+                <button class="pure-button pure-button-primary highscore-button" onclick="viewPuzzleHighscore(this.Id)">View highscores</button>
             </section>
             <section class="pure-controls" id="start-new-button-section">
                 <button class="pure-button pure-button-primary" id="start-new-puzzle-button" onclick="startPuzzle()">Start a puzzle</button>
@@ -280,23 +280,6 @@
 
         function viewPuzzleHighscore(puzzleId){
             console.log(`looking at puzzle with id: ${puzzleId}`);
-
-            solutionString = "";
-            const node = document.getElementsByClassName('sudoku-table');
-            sudokuCells = node[puzzleId].getElementsByClassName('sudoku-cell');
-
-            for (var i = 0; i < startStateString.length; i++) {
-                solutionString += sudokuCells[i].value;
-
-                if(sudokuCells[i].name == 'sudoku-cell-edge') {
-                    solutionString += '\n'
-                }
-                else {
-                    solutionString += ' ';
-                }
-            }
-
-            console.log(`current solution:\n${solutionString}`);
         }
 
         function logout(){
