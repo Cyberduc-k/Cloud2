@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -62,6 +63,8 @@ func (self *Handler) stopSudoku(writer http.ResponseWriter, request *http.Reques
 
 	log.Println(user)
 	userSolution := request.FormValue("Solution")
+	log.Println(userSolution)
+	userSolution = strings.ReplaceAll(userSolution, "\\n", "\n")
 	sudoku, err := self.sudokuRepo.GetById(user.CurrentSudokuId)
 	if err != nil {
 		log.Printf("error: %v", err)
